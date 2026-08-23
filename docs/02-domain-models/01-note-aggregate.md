@@ -18,11 +18,11 @@
 | 部品名 | 型 / 構造 | ビジネスルール・不変条件 | 関連エラーコード |
 | :--- | :--- | :--- | :--- |
 | **`NoteId`** | `string` (UUID) | 記事の一意な識別子。`crypto.randomUUID()` で自動採番。 | - |
-| **`AuthorId`** | `string` (UUID) | 記事を執筆した著者のユーザー識別子。 | - |
+| **`authorId`** | `UserId` (UUID) | 記事を執筆した著者のユーザー識別子。 | - |
 | **`NoteTitle`** | `string` | ・5文字以上100文字以内<br>・前後の空白は自動トリム（`trim()`）<br>・空白のみは不可 | `INVALID_NOTE_TITLE_LENGTH` |
 | **`NoteContent`** | `{ freeArea, paidArea }` | ・`freeArea`（無料エリア）: 必須（10〜10,000文字）<br>・`paidArea`（有料エリア）: 有料記事は必須（1〜50,000文字）、無料記事は空文字許容 | `INVALID_FREE_AREA_LENGTH`<br>`PAID_AREA_REQUIRED_FOR_PAID_NOTE` |
 | **`Price`** | `number` | ・0円（無料）または 100円〜100,000円（有料）<br>・整数のみ許容（小数は不可）<br>※決定理由は [ADR 0003](../03-adr/0003-pricing-policy-and-limits.md) 参照 | `INVALID_PRICE_RANGE` |
-| **`AiCategory`** | `{ major, minor }` | ・大カテゴリと小カテゴリの組み合わせが定義済みリストに合致すること | `INVALID_AI_CATEGORY_COMBINATION` |
+| **`Category`** | `{ major, minor }` | ・大カテゴリと小カテゴリの組み合わせが定義済みリストに合致すること<br>※決定理由は [ADR 0004](../03-adr/0004-ubiquitous-language-and-naming-conventions.md) 参照 | `INVALID_CATEGORY_COMBINATION` |
 | **`NoteStatus`** | Enum (`DRAFT`, `PUBLISHED`, `ARCHIVED`) | ・状態の表現。直接の外部変更は不可（メソッド経由でのみ遷移） | `INVALID_NOTE_STATUS_TRANSITION` |
 
 ---
@@ -30,12 +30,12 @@
 ## 3. 集約ルート (`Note` Entity) の振る舞い・メソッド
 
 ### ① 下書き作成 (`Note.createDraft`)
-- **引数**: `id`, `authorId`, `title`, `content`, `price`, `aiCategory`, `createdAt?`
+- **引数**: `id`, `authorId`, `title`, `content`, `price`, `category`, `createdAt?`
 - **振る舞い**: 初期状態を `NoteStatus.DRAFT` としてインスタンスを生成する。
 
 ### ② 記事公開 (`note.publish()`)
 - **条件**:
-  - タイトル、本文、価格、AIカテゴリがすべて正常に設定されていること。
+  - タイトル、本文、価格、カテゴリがすべて正常に設定されていること。
   - すでに `PUBLISHED` の場合はエラー（または冪等に成功）。
 - **振る舞い**: ステータスを `PUBLISHED` に変更し、`updatedAt` を更新する。
 
@@ -70,5 +70,5 @@
 | `INVALID_FREE_AREA_LENGTH` | 無料エリア本文が10文字未満または10,000文字超過 |
 | `PAID_AREA_REQUIRED_FOR_PAID_NOTE` | 有料記事（価格>0）なのに有料エリア本文が未設定 |
 | `INVALID_PRICE_RANGE` | 価格が0円以外で100円未満または100,000円超過、または小数 |
-| `INVALID_AI_CATEGORY_COMBINATION` | 大カテゴリと小カテゴリの組み合わせが不整合 |
+| `INVALID_CATEGORY_COMBINATION` | 大カテゴリと小カテゴリの組み合わせが不整合 |
 | `INVALID_NOTE_STATUS_TRANSITION` | 不正な状態遷移（例: 必須項目不備のまま公開しようとした等） |

@@ -24,7 +24,8 @@ AI活用ノウハウ・プロンプト・Claude Skills 等の実践的なアイ�
   - [テスト設計戦略 (05-testing-strategy.md)](docs/01-architecture/05-testing-strategy.md)
   - [値オブジェクトの最適化戦略 (07-value-object-optimization.md)](docs/01-architecture/07-value-object-optimization.md)
 - **ドメインモデル (docs/02-domain-models/)**
-  - [ドメインモデル全体マップ・用語集 (overview.md)](docs/02-domain-models/overview.md)
+  - [ドメインモデル全体マップ (overview.md)](docs/02-domain-models/overview.md)
+  - [ユビキタス言語定義書 (ubiquitous-language.md)](docs/02-domain-models/ubiquitous-language.md)
   - [記事集約仕様書 (01-note-aggregate.md)](docs/02-domain-models/01-note-aggregate.md)
   - [購入集約仕様書 (02-purchase-aggregate.md)](docs/02-domain-models/02-purchase-aggregate.md)
 - **設計決定記録 (docs/03-adr/)**
@@ -32,6 +33,7 @@ AI活用ノウハウ・プロンプト・Claude Skills 等の実践的なアイ�
   - [ADR 0001: 初期アーキテクチャおよび設計方針の採択](docs/03-adr/0001-initial-architecture.md)
   - [ADR 0002: デプロイ基盤としての Vercel 採用および導入計画](docs/03-adr/0002-deployment-platform-vercel.md)
   - [ADR 0003: 記事価格帯の決定方針（最低100円〜上限10万円）](docs/03-adr/0003-pricing-policy-and-limits.md)
+  - [ADR 0004: ユビキタス言語の洗練（Category への汎用化と UserId への型統合）](docs/03-adr/0004-ubiquitous-language-and-naming-conventions.md)
 - **学習振り返りログ (docs/04-learning-logs/)**
   - [Step 00: 命名規則と基本概念 (step-00-conventions.md)](docs/04-learning-logs/step-00-conventions.md)
   - [Step 01: Value Object の実装と単体テスト (step-01-value-objects.md)](docs/04-learning-logs/step-01-value-objects.md)

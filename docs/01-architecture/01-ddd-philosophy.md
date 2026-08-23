@@ -17,7 +17,7 @@
 
 | 概念 | 特徴 | 例（AI-Note Market） |
 | :--- | :--- | :--- |
-| **値オブジェクト (Value Object)** | ・一意なIDを持たない<br>・「値」そのもので同一性を判定<br>・**完全イミュータブル（不変）**<br>・自己バリデーションを持つ | `Price`（価格）, `NoteTitle`（タイトル）, `AiCategory`（Claude/Gemini等） |
+| **値オブジェクト (Value Object)** | ・一意なIDを持たない<br>・「値」そのもので同一性を判定<br>・**完全イミュータブル（不変）**<br>・自己バリデーションを持つ | `Price`（価格）, `NoteTitle`（タイトル）, `Category`（大分類×小分類）, `UserId` |
 | **エンティティ (Entity)** | ・**一意な識別子（ID）** を持つ<br>・属性が変わっても同じものとして追跡される<br>・ライフサイクル（状態遷移）を持つ | `Note`（記事：下書き→公開→停止）, `User`（ユーザー） |
 | **集約 (Aggregate)** | ・強い一貫性を保つべきエンティティと値オブジェクトのまとまり<br>・外部からは集約ルート（Aggregate Root）経由でのみ操作可能 | `Note` 集約, `Purchase` 集約 |
 | **ドメインサービス (Domain Service)** | ・単一のエンティティや値オブジェクトに収まらない複数エンティティを跨ぐルール | 「記事購入可否チェック（NoteとPurchaseの整合性確認）」 |
@@ -32,7 +32,7 @@
 // ❌ プリミティブ型（アンチパターン）
 function createNote(title: string, price: number) {
   // price に -500 や 999999999 が渡されてもコンパイルは通ってしまう！
-  // 呼び出し側の至る所で毎回 if (price >= 100 && price <= 50000) と書く羽目になる
+  // 呼び出し側の至る所で毎回 if (price >= 100 && price <= 100000) と書く羽目になる
 }
 ```
 
@@ -42,8 +42,8 @@ class Price {
   private constructor(private readonly value: number) {}
 
   public static create(value: number): Price {
-    if (value !== 0 && (value < 100 || value > 50000)) {
-      throw new Error("価格は0円（無料）または100円〜50,000円の範囲で指定してください。");
+    if (value !== 0 && (value < 100 || value > 100000)) {
+      throw new Error("価格は0円（無料）または100円〜100,000円の範囲で指定してください。");
     }
     return new Price(value);
   }

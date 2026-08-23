@@ -8,7 +8,7 @@
 
 | 種類 | 規約 | 例 | 備考 |
 | :--- | :--- | :--- | :--- |
-| **Value Object** | PascalCase | `Price`, `NoteTitle`, `AiCategory` | 原則イミュータブル（イミュータブルな値） |
+| **Value Object** | PascalCase | `Price`, `NoteTitle`, `Category`, `UserId` | 原則イミュータブル（イミュータブルな値） |
 | **Entity / 集約** | PascalCase | `Note`, `Purchase`, `User` | 一意なIDを持ち、ライフサイクルを持つ |
 | **UseCase** | 動詞 + 名詞 + `UseCase` | `PublishNoteUseCase`, `PurchaseNoteUseCase` | 1つのユースケースにつき1クラス/関数 |
 | **Repository Interface** | `I` + 名詞 + `Repository` | `INoteRepository`, `IPurchaseRepository` | ドメイン層またはUseCase層で定義 |

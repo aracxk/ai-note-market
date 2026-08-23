@@ -19,7 +19,7 @@
 | :--- | :--- | :--- | :--- |
 | **`PurchaseId`** | `string` (UUID) | 購入記録の一意な識別子。`crypto.randomUUID()` で自動採番。 | - |
 | **`NoteId`** | `string` (UUID) | 購入対象となった記事の識別子。 | - |
-| **`BuyerId`** | `string` (UUID) | 記事を購入したユーザーの識別子。 | - |
+| **`buyerId`** | `UserId` (UUID) | 記事を購入したユーザーの識別子（型は `UserId`）。 | - |
 | **`purchasedPrice`** | `Price` (VO) | **購入成立時点の価格スナップショット**。<br>取引成立時の記事価格を固定コピーして保持する。 | - |
 | **`purchasedAt`** | `Date` | 取引成立日時。 | - |
 
@@ -28,7 +28,7 @@
 ## 3. 集約ルート (`Purchase` Entity) の振る舞い・不変条件
 
 ### ① 購入取引の成立 (`Purchase.create`)
-- **引数**: `note: Note`, `buyerId: BuyerId`, `purchasedAt?: Date`
+- **引数**: `note: Note`, `buyerId: UserId`, `purchasedAt?: Date`
 - **戻り値**: `Result<Purchase, DomainError>`
 - **検証ルール（不変条件）**:
   1. **自己購入の禁止**: 著者は自分自身の記事を購入できない（`buyerId.equals(note.authorId)` の場合はエラー）。

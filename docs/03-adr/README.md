@@ -12,6 +12,7 @@
 | **[0001](0001-initial-architecture.md)** | 初期アーキテクチャおよび設計方針の採択 | 承認済 (Accepted) | 2026-08-23 | DDD・クリーンアーキテクチャ・フィーチャーベース構造の採択 |
 | **[0002](0002-deployment-platform-vercel.md)** | デプロイ基盤としての Vercel 採用および導入計画 | 承認済 (Accepted) | 2026-08-23 | Next.js App Router と Server Actions に最適化された Vercel の採用と Phase 5 での導入計画 |
 | **[0003](0003-pricing-policy-and-limits.md)** | 記事価格帯の決定方針（最低100円〜上限10万円および手数料内包モデル） | 承認済 (Accepted) | 2026-08-23 | Stripe決済手数料構造、競合調査、初心者参入容易性と高額AIノウハウ売買の両立に基づく価格帯の決定 |
+| **[0004](0004-ubiquitous-language-and-naming-conventions.md)** | ユビキタス言語の洗練（Category への汎用化と UserId への型統合） | 承認済 (Accepted) | 2026-08-23 | 過度な具体化を避ける Category へのリネームと、著者・購入者を UserId 型に統一するモデリング決定 |
 
 ---
 
