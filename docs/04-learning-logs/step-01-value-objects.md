@@ -25,7 +25,12 @@
 ### ③ Vitest による単体テスト
 - `describe`, `it`, `expect` を使った構造化テストの記述。
 - 正常系（0円、100円、50,000円、equals判定）と異常系（-100円、50円、50,001円、100.5円）の網羅。
-- 外部フレームワークやDBを介さないため、9件のテストがわずか 2ms で超高速実行されることを確認。
+- 外部フレームワークやDBを介さないため、11件のテストがわずか 2ms で超高速実行されることを確認。
+
+### ④ メモリ最適化（Flyweight パターン）と参照一致の検証
+- 0円（無料）のインスタンスを事前に1個だけ保持（`Price.ZERO`）し、何億回 `Price.create(0)` が呼ばれてもメモリを1個分しか消費しない設計を導入。
+- Value Object は `readonly`（不変）であるため、同一インスタンスを何万人で共有しても副作用（意図せぬ書き換え）が絶対に起きない。
+- 単体テストで `expect(result1.value).toBe(result2.value)`（`toBe` によるメモリ番地の一致検証）を実施し、同一インスタンスの返却を証明。
 
 ---
 
@@ -33,3 +38,4 @@
 - `feat: add Result type and DomainError base class`
 - `feat: implement Price Value Object and unit tests`
 - `docs: add README.md and learning log step-01`
+- `refactor: apply Flyweight pattern to Price and add reference equality tests`
