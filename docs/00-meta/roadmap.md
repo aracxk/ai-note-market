@@ -32,7 +32,7 @@ flowchart TD
 - **実装内容**:
   - [x] 共通基盤: `Result` 型, `DomainError` 基底クラス
   - [x] `Price` Value Object（無料0円、有料100円〜100,000円、Flyweight最適化）＋ 単体テスト (11 passed)
-  - [ ] `NoteTitle` Value Object（5〜100文字、トリム処理）
+  - [x] `NoteTitle` Value Object（5〜100文字、トリム処理）＋ 単体テスト (9 passed)
   - [ ] `AiCategory` Value Object（許可されたAI分類）
   - [ ] `NoteContent` Value Object（本文）
   - [ ] `Note` Entity / Aggregate（状態遷移：Draft → Published → Archived）
