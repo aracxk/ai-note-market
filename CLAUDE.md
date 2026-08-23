@@ -21,3 +21,5 @@ Key Rules:
 1. Do NOT use emojis in code, comments, or documentation.
 2. Domain layer must NOT depend on any external frameworks or libraries.
 3. Optimize Value Objects using static factory methods and Flyweight caching where applicable.
+4. When changing constants or business rules, ALWAYS perform a project-wide grep search to ensure 100% consistency across comments, JSDoc, tests, and docs.
+5. ALWAYS proactively propose creating/updating an ADR in `docs/03-adr/` whenever a design or business rationale (Why) is discussed.
