@@ -25,6 +25,7 @@ AI活用ノウハウ・プロンプト・Claude Skills 等の実践的なアイ�
   - [ドメインモデル概要・ビジネスルール一覧 (overview.md)](docs/02-domain-models/overview.md)
 - **設計決定記録 (docs/03-adr/)**
   - [ADR 0001: 初期アーキテクチャおよび設計方針の採択](docs/03-adr/0001-initial-architecture.md)
+  - [ADR 0002: デプロイ基盤としての Vercel 採用および導入計画](docs/03-adr/0002-deployment-platform-vercel.md)
 - **学習振り返りログ (docs/04-learning-logs/)**
   - [Step 00: 命名規則と基本概念 (step-00-conventions.md)](docs/04-learning-logs/step-00-conventions.md)
   - [Step 01: Value Object の実装と単体テスト (step-01-value-objects.md)](docs/04-learning-logs/step-01-value-objects.md)

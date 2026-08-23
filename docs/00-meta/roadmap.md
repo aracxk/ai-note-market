@@ -61,12 +61,13 @@ flowchart TD
   - `src/features/purchase/`
   - `src/shared/`
 
-### Phase 5: Next.js App Router UI 実装
-- **ゴール**: Clean Architecture の外側（Presentation層）として Next.js を接続する。
+### Phase 5: Next.js App Router UI 実装 & Vercel デプロイ
+- **ゴール**: Clean Architecture の外側（Presentation層）として Next.js を接続し、Vercel 上で動作確認を行う（ADR 0002 参照）。
 - **実装内容**:
-  - 記事一覧・詳細画面
+  - 記事一覧・詳細画面（Server Components）
   - 購入ボタンと Server Actions による UseCase 呼び出し
   - 閲覧権限（購入済みか否か）による本文表示制御
+  - Vercel への初回デプロイとプレビュー環境の確認
 
 ### Phase 6: Playwright による E2E テスト
 - **ゴール**: ユーザー視点でのシナリオテスト（執筆 → 公開 → 別ユーザーで購入 → 閲覧可能になる）を自動化。
