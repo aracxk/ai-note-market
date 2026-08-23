@@ -21,6 +21,7 @@ AI活用ノウハウ・プロンプト・Claude Skills 等の実践的なアイ�
   - [コードレビュー運用指針 (review-guidelines.md)](docs/00-meta/review-guidelines.md)
 - **アーキテクチャ理論 (docs/01-architecture/)**
   - [DDDの思想と基礎概念 (01-ddd-philosophy.md)](docs/01-architecture/01-ddd-philosophy.md)
+  - [集約設計の原則・崩壊パターンとトレードオフ (02-aggregate-design-and-tradeoffs.md)](docs/01-architecture/02-aggregate-design-and-tradeoffs.md)
   - [エラーハンドリング戦略 (04-error-handling.md)](docs/01-architecture/04-error-handling.md)
   - [テスト設計戦略 (05-testing-strategy.md)](docs/01-architecture/05-testing-strategy.md)
   - [値オブジェクトの最適化戦略 (07-value-object-optimization.md)](docs/01-architecture/07-value-object-optimization.md)
