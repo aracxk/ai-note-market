@@ -16,9 +16,11 @@ AI活用ノウハウ・プロンプト・Claude Skills 等の実践的なアイ�
 - **メタ・規約 (docs/00-meta/)**
   - [学習ロードマップ (roadmap.md)](docs/00-meta/roadmap.md)
   - [コーディング・設計規約 (conventions.md)](docs/00-meta/conventions.md)
+  - [AI駆動開発とコンテキスト管理指針 (ai-driven-guidelines.md)](docs/00-meta/ai-driven-guidelines.md)
 - **アーキテクチャ理論 (docs/01-architecture/)**
   - [DDDの思想と基礎概念 (01-ddd-philosophy.md)](docs/01-architecture/01-ddd-philosophy.md)
   - [エラーハンドリング戦略 (04-error-handling.md)](docs/01-architecture/04-error-handling.md)
+  - [テスト設計戦略 (05-testing-strategy.md)](docs/01-architecture/05-testing-strategy.md)
 - **ドメインモデル (docs/02-domain-models/)**
   - [ドメインモデル概要・ビジネスルール一覧 (overview.md)](docs/02-domain-models/overview.md)
 - **設計決定記録 (docs/03-adr/)**
