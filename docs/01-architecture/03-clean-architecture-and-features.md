@@ -35,14 +35,14 @@ src/
 ├── features/
 │   │
 │   ├── note/                     # ★ 「記事」に関するすべての世界
-│   │   ├── domain/               # ├─ 【DDD / 中心】Note, Price, Title, INoteRepository
-│   │   ├── usecases/             # ├─ 【Clean 中間】PublishNoteUseCase, UpdatePriceUseCase
+│   │   ├── domain/               # ├─ 【DDD / 中心】Note, Price, Title（純粋モデル）
+│   │   ├── usecases/             # ├─ 【Clean 中間】INoteRepository (Port), PublishNoteUseCase
 │   │   ├── infrastructure/       # ├─ 【Clean 外側】InMemoryNoteRepository, PrismaNoteRepository
 │   │   └── presentation/         # └─ 【Clean 最外層】NoteCard.tsx, NoteDetail.tsx, ServerActions
 │   │
 │   └── purchase/                 # ★ 「購入・決済」に関するすべての世界
-│       ├── domain/               # ├─ 【DDD / 中心】Purchase, PurchaseId, IPurchaseRepository
-│       ├── usecases/             # ├─ 【Clean 中間】PurchaseNoteUseCase
+│       ├── domain/               # ├─ 【DDD / 中心】Purchase, PurchaseId（純粋モデル）
+│       ├── usecases/             # ├─ 【Clean 中間】IPurchaseRepository (Port), PurchaseNoteUseCase
 │       ├── infrastructure/       # ├─ 【Clean 外側】InMemoryPurchaseRepository, StripeGateway
 │       └── presentation/         # └─ 【Clean 最外層】PurchaseButton.tsx, ReceiptModal.tsx
 │
