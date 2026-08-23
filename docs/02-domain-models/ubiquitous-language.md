@@ -30,9 +30,9 @@
 | **無料エリア** | `FreeArea` / `string` | 未購入者を含むすべてのユーザーが閲覧可能な導入・概要（10〜10,000文字）。 | `content.freeArea: string` |
 | **有料エリア** | `PaidArea` / `string` | 著者および購入者のみが閲覧可能な具体的なノウハウ本文（1〜50,000文字）。 | `content.paidArea: string` |
 | **販売価格** | `Price` | 著者が現在設定している記事の販売金額（0円 または 100〜100,000円）。 | `note.price: Price` |
-| **カテゴリ** | `Category` | 大分類（ツール/領域）× 小分類（形式）の組み合わせ。 | `note.category: Category` |
-| **大カテゴリ** | `MajorCategory` | 対象AI基盤・ツール（`CLAUDE`, `GEMINI`, `CURSOR`, `CHATGPT`, `OTHER`）。 | `category.major` |
-| **小カテゴリ** | `MinorCategory` | アイディアの形式・種別（`SKILLS`, `SPARK`, `CURSOR_RULES`, `GPTS`, `PROMPT`, `OTHER`）。 | `category.minor` |
+| **カテゴリ** | `Category` | 大分類（目的・業務領域）× 小分類（成果物形式）の組み合わせ。 | `note.category: Category` |
+| **大カテゴリ** | `MajorCategory` | 目的・業務領域（`ENGINEERING`, `MARKETING`, `DESIGN`, `WRITING`, `BUSINESS`, `OTHER`）。 | `category.major` |
+| **小カテゴリ** | `MinorCategory` | 成果物形式（`PROMPT`, `RULES_CONFIG`, `SKILLS_EXTENSION`, `SOURCE_CODE`, `WORKFLOW_GUIDE`, `OTHER`）。 | `category.minor` |
 | **記事ステータス** | `NoteStatus` | `DRAFT`（下書き）、`PUBLISHED`（公開中）、`ARCHIVED`（販売停止）。 | `note.status: NoteStatus` |
 | **購入記録** | `Purchase` | 記事の購入取引が完了したことを証明する不変の取引証跡（集約ルート）。 | `const purchase: Purchase` |
 | **購入記録ID** | `PurchaseId` | 取引の一意な識別子（UUID）。 | `purchase.id: PurchaseId` |

@@ -34,6 +34,7 @@ AI活用ノウハウ・プロンプト・Claude Skills 等の実践的なアイ�
   - [ADR 0002: デプロイ基盤としての Vercel 採用および導入計画](docs/03-adr/0002-deployment-platform-vercel.md)
   - [ADR 0003: 記事価格帯の決定方針（最低100円〜上限10万円）](docs/03-adr/0003-pricing-policy-and-limits.md)
   - [ADR 0004: ユビキタス言語の洗練（Category への汎用化と UserId への型統合）](docs/03-adr/0004-ubiquitous-language-and-naming-conventions.md)
+  - [ADR 0005: 記事カテゴリの分類軸再設計（目的領域×成果物形式への普遍化）](docs/03-adr/0005-category-dimension-redesign.md)
 - **学習振り返りログ (docs/04-learning-logs/)**
   - [Step 00: 命名規則と基本概念 (step-00-conventions.md)](docs/04-learning-logs/step-00-conventions.md)
   - [Step 01: Value Object の実装と単体テスト (step-01-value-objects.md)](docs/04-learning-logs/step-01-value-objects.md)

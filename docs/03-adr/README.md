@@ -13,6 +13,7 @@
 | **[0002](0002-deployment-platform-vercel.md)** | デプロイ基盤としての Vercel 採用および導入計画 | 承認済 (Accepted) | 2026-08-23 | Next.js App Router と Server Actions に最適化された Vercel の採用と Phase 5 での導入計画 |
 | **[0003](0003-pricing-policy-and-limits.md)** | 記事価格帯の決定方針（最低100円〜上限10万円および手数料内包モデル） | 承認済 (Accepted) | 2026-08-23 | Stripe決済手数料構造、競合調査、初心者参入容易性と高額AIノウハウ売買の両立に基づく価格帯の決定 |
 | **[0004](0004-ubiquitous-language-and-naming-conventions.md)** | ユビキタス言語の洗練（Category への汎用化と UserId への型統合） | 承認済 (Accepted) | 2026-08-23 | 過度な具体化を避ける Category へのリネームと、著者・購入者を UserId 型に統一するモデリング決定 |
+| **[0005](0005-category-dimension-redesign.md)** | 記事カテゴリの分類軸再設計（ツール依存から目的領域×成果物形式への普遍化） | 承認済 (Accepted) | 2026-08-23 | ツール名依存を廃止し、目的業務領域（大分類）×成果物形式（小分類）による普遍的カテゴリモデルの採択 |
 
 ---
 
