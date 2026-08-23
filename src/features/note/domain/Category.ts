@@ -91,29 +91,6 @@ export class Category {
   }
 
   /**
-   * よく使われる定番カテゴリのファクトリメソッド
-   */
-  public static engineeringRules(): Category {
-    return Category.CACHE.get("ENGINEERING:RULES_CONFIG")!;
-  }
-
-  public static engineeringSkills(): Category {
-    return Category.CACHE.get("ENGINEERING:SKILLS_EXTENSION")!;
-  }
-
-  public static marketingPrompt(): Category {
-    return Category.CACHE.get("MARKETING:PROMPT")!;
-  }
-
-  public static writingPrompt(): Category {
-    return Category.CACHE.get("WRITING:PROMPT")!;
-  }
-
-  public static businessWorkflow(): Category {
-    return Category.CACHE.get("BUSINESS:WORKFLOW_GUIDE")!;
-  }
-
-  /**
    * 値オブジェクトの同値性を判定する
    */
   public equals(other: Category): boolean {

@@ -58,23 +58,14 @@ describe("Category (カテゴリ Value Object)", () => {
       }
     });
 
-    it("便利メソッド（Category.engineeringRules）で直接取得できること", () => {
-      const category = Category.engineeringRules();
-
-      expect(category.major).toBe("ENGINEERING");
-      expect(category.minor).toBe("RULES_CONFIG");
-    });
-
     it("Flyweight パターンにより何度生成しても同一インスタンス（参照一致）を返すこと", () => {
       const result1 = Category.create("ENGINEERING", "SKILLS_EXTENSION");
       const result2 = Category.create("ENGINEERING", "SKILLS_EXTENSION");
-      const shortcut = Category.engineeringSkills();
 
       expect(result1.success && result2.success).toBe(true);
       if (result1.success && result2.success) {
         // toBe はメモリ番地の一致を検証
         expect(result1.value).toBe(result2.value);
-        expect(result1.value).toBe(shortcut);
       }
     });
 
