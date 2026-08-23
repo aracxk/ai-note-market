@@ -4,13 +4,13 @@
 
 ```mermaid
 flowchart TD
-    Phase0["Phase 0: 環境整備 & agent.md & docs体系化"]
-    Phase1["Phase 1: DDD (中身を作る) - Value Object / Entity / 単体テスト"]
-    Phase2["Phase 2: Clean Architecture (器で包む) - UseCase / Repository / DIP"]
-    Phase3["Phase 3: Zod & スキーマ駆動 - 境界防御 / DTO / Result型"]
-    Phase4["Phase 4: Feature Design (配置を整える) - features/ への凝集"]
+    Phase0["Phase 0: 環境整備 & agent.md & docs体系化 (完了)"]
+    Phase1["Phase 1: DDD (中身を作る) - Value Object / Entity / 単体テスト (完了)"]
+    Phase2["Phase 2: Feature-based Clean Architecture - UseCase / Repository / DIP"]
+    Phase3["Phase 3: Zod & スキーマ駆動 - 境界防御 / Input DTO / Result型"]
+    Phase4["Phase 4: CQRS & 読み取りモデル - 一覧・検索の最適化とデータ結合"]
     Phase5["Phase 5: Next.js UI連携 - Server Actions & クリーンUI"]
-    Phase6["Phase 6: Playwright E2Eテスト - 購入・閲覧制御シナリオ"]
+    Phase6["Phase 6: Playwright E2Eテスト & CI自動化"]
     Phase7["Phase 7: Go言語での再実装比較 (発展)"]
 
     Phase0 --> Phase1 --> Phase2 --> Phase3 --> Phase4 --> Phase5 --> Phase6 --> Phase7
@@ -25,7 +25,7 @@ flowchart TD
 - [x] AI行動制御ルール (`agent.md`)
 - [x] ドキュメント階層構造 (`docs/`)
 - [x] TypeScript / Vitest の基本環境セットアップ
-- [x] Git管理・GitHub連携・PRテンプレート整備
+- [x] Git管理・GitHub連携・PRテンプレート整備・レビューSkill配備
 
 ### Phase 1: 【ステップ1】DDD（中身を作る） (完了)
 - **ゴール**: 外部フレームワークに一切依存しない純粋なドメイン層を実装し、ビジネスルールを強固にカプセル化する。
@@ -40,14 +40,20 @@ flowchart TD
   - [x] `Purchase` Entity / Aggregate（自己購入禁止、販売状態検証、価格スナップショット）＋ 単体テスト (6 passed)
 - **テスト**: Vitest による純粋なドメイン単体テスト (全85件 All Green, 32ms)
 
-### Phase 2: 【ステップ2】Clean Architecture（器で包む）
-- **ゴール**: ドメインを呼び出す手順（UseCase）と永続化の約束事（Repository）を定義し、依存性の逆転（DIP）を体感する。
+### Phase 2: 【ステップ2】Feature-based Clean Architecture（器で包む）
+- **ゴール**: 各フィーチャー内でドメインを呼び出す手順（UseCase）と永続化の約束事（Repository）を定義し、依存性の逆転（DIP）を体感する。
 - **実装内容**:
-  - `PublishNoteUseCase`（記事公開）
-  - `PurchaseNoteUseCase`（記事購入、二重購入チェック、著者本人購入禁止）
-  - `INoteRepository` / `IPurchaseRepository`（インターフェース）
-  - `InMemoryNoteRepository` / `InMemoryPurchaseRepository`（具象）
-- **テスト**: モックやインメモリリポジトリを用いたユースケーステスト
+  - **記事機能 (`src/features/note/`)**:
+    - `INoteRepository`（インターフェース）
+    - `PublishNoteUseCase`（記事公開ユースケース）
+    - `InMemoryNoteRepository`（テスト用インフラ具象）
+    - ユースケース単体テスト
+  - **購入機能 (`src/features/purchase/`)**:
+    - `IPurchaseRepository`（インターフェース）
+    - `PurchaseNoteUseCase`（記事購入ユースケース：二重購入防止・自己購入禁止・保存）
+    - `InMemoryPurchaseRepository`（テスト用インフラ具象）
+    - ユースケース単体テスト
+- **テスト**: インメモリリポジトリを用いた高速なユースケース単体テスト
 
 ### Phase 3: Zod によるスキーマ駆動・境界防御
 - **ゴール**: ドメインルールと外部入力バリデーションの責務を綺麗に分離する。
@@ -55,15 +61,14 @@ flowchart TD
   - APIやフォームからの入力を検証する Zod スキーマ
   - DTO からドメインオブジェクトへの変換と Result 型によるエラーハンドリング
 
-### Phase 4: 【ステップ3】Feature Design（配置を整える）
-- **ゴール**: 肥大化に耐えうるディレクトリ構成（Feature-based Architecture）へ整理する。
+### Phase 4: CQRS による読み取り専用クエリモデルの構築
+- **ゴール**: 疎結合にした集約同士の一覧表示（購入履歴、著者別記事一覧等）を、集約を介さず高速に結合取得するクエリサービスを構築する。
 - **実装内容**:
-  - `src/features/note/`
-  - `src/features/purchase/`
-  - `src/shared/`
+  - `PurchaseHistoryQueryService`（マイページ用購入一覧 DTO 取得）
+  - `NoteSummaryQueryService`（一覧画面用カード DTO 取得）
 
 ### Phase 5: Next.js App Router UI 実装 & Vercel デプロイ
-- **ゴール**: Clean Architecture の外側（Presentation層）として Next.js を接続し、Vercel 上で動作確認を行う（ADR 0002 参照）。
+- **ゴール**: Clean Architecture の最外層（Presentation層）として Next.js を接続し、Vercel 上で動作確認を行う（ADR 0002 参照）。
 - **実装内容**:
   - 記事一覧・詳細画面（Server Components）
   - 購入ボタンと Server Actions による UseCase 呼び出し
