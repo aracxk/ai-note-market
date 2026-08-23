@@ -21,7 +21,7 @@
 | **`AuthorId`** | `string` (UUID) | 記事を執筆した著者のユーザー識別子。 | - |
 | **`NoteTitle`** | `string` | ・5文字以上100文字以内<br>・前後の空白は自動トリム（`trim()`）<br>・空白のみは不可 | `INVALID_NOTE_TITLE_LENGTH` |
 | **`NoteContent`** | `{ freeArea, paidArea }` | ・`freeArea`（無料エリア）: 必須（10〜10,000文字）<br>・`paidArea`（有料エリア）: 有料記事は必須（1〜50,000文字）、無料記事は空文字許容 | `INVALID_FREE_AREA_LENGTH`<br>`PAID_AREA_REQUIRED_FOR_PAID_NOTE` |
-| **`Price`** | `number` | ・0円（無料）または 100円〜100,000円（有料）<br>・整数のみ許容（小数は不可） | `INVALID_PRICE_RANGE` |
+| **`Price`** | `number` | ・0円（無料）または 100円〜100,000円（有料）<br>・整数のみ許容（小数は不可）<br>※決定理由は [ADR 0003](../03-adr/0003-pricing-policy-and-limits.md) 参照 | `INVALID_PRICE_RANGE` |
 | **`AiCategory`** | `{ major, minor }` | ・大カテゴリと小カテゴリの組み合わせが定義済みリストに合致すること | `INVALID_AI_CATEGORY_COMBINATION` |
 | **`NoteStatus`** | Enum (`DRAFT`, `PUBLISHED`, `ARCHIVED`) | ・状態の表現。直接の外部変更は不可（メソッド経由でのみ遷移） | `INVALID_NOTE_STATUS_TRANSITION` |
 
