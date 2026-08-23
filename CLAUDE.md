@@ -11,8 +11,13 @@ This project is a hands-on learning repository strictly following Domain-Driven 
    - Do NOT use emojis anywhere (in code, comments, commit messages, or docs).
 
 2. **Single Source of Truth**:
-   - Refer to `agent.md` for overall AI behavioral guidelines.
-   - Refer to `docs/00-meta/conventions.md` for coding, naming, and commit conventions.
-   - Refer to `docs/00-meta/roadmap.md` for current phase and progress.
-   - Refer to `docs/01-architecture/04-error-handling.md` for Result type and error handling.
-   - Refer to `docs/01-architecture/05-testing-strategy.md` for unit testing principles (Vitest, AAA pattern).
+- Coding & Naming Conventions: docs/00-meta/conventions.md
+- Error Handling Strategy (Result type & DomainError): docs/01-architecture/04-error-handling.md
+- Testing Strategy (Vitest, AAA pattern, boundary values): docs/01-architecture/05-testing-strategy.md
+- Value Object Optimization (Flyweight pattern): docs/01-architecture/07-value-object-optimization.md
+- Domain Models & Rules: docs/02-domain-models/overview.md
+
+Key Rules:
+1. Do NOT use emojis in code, comments, or documentation.
+2. Domain layer must NOT depend on any external frameworks or libraries.
+3. Optimize Value Objects using static factory methods and Flyweight caching where applicable.
