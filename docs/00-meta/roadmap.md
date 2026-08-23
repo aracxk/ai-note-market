@@ -27,17 +27,18 @@ flowchart TD
 - [x] TypeScript / Vitest の基本環境セットアップ
 - [x] Git管理・GitHub連携・PRテンプレート整備
 
-### Phase 1: 【ステップ1】DDD（中身を作る） (進行中: Step 02 準備中)
+### Phase 1: 【ステップ1】DDD（中身を作る） (完了)
 - **ゴール**: 外部フレームワークに一切依存しない純粋なドメイン層を実装し、ビジネスルールを強固にカプセル化する。
 - **実装内容**:
-  - [x] 共通基盤: `Result` 型, `DomainError` 基底クラス
+  - [x] 共通基盤: `Result` 型, `DomainError` 基底クラス, `ValueObject` / `Entity` 基底クラス
+  - [x] `UserId` & `NoteId` & `PurchaseId`（識別子）＋ 単体テスト (15 passed)
   - [x] `Price` Value Object（無料0円、有料100円〜100,000円、Flyweight最適化）＋ 単体テスト (11 passed)
   - [x] `NoteTitle` Value Object（5〜100文字、トリム処理）＋ 単体テスト (9 passed)
   - [x] `Category` Value Object（大カテゴリ×小カテゴリの整合性、Flyweight最適化）＋ 単体テスト (10 passed)
   - [x] `NoteContent` Value Object（本文：無料10〜10,000文字 / 有料1〜50,000文字）＋ 単体テスト (15 passed)
   - [x] `Note` Entity / Aggregate（状態遷移：Draft → Published → Archived、閲覧認可）＋ 単体テスト (15 passed)
-  - [ ] `Purchase` Entity（購入者、決済金額、購入日時）
-- **テスト**: Vitest による純粋なドメイン単体テスト
+  - [x] `Purchase` Entity / Aggregate（自己購入禁止、販売状態検証、価格スナップショット）＋ 単体テスト (6 passed)
+- **テスト**: Vitest による純粋なドメイン単体テスト (全85件 All Green, 32ms)
 
 ### Phase 2: 【ステップ2】Clean Architecture（器で包む）
 - **ゴール**: ドメインを呼び出す手順（UseCase）と永続化の約束事（Repository）を定義し、依存性の逆転（DIP）を体感する。
