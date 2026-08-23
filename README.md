@@ -79,6 +79,12 @@ npm run typecheck
 
 ---
 
+## プロジェクト専用スキル (.agents/skills/)
+本リポジトリには、誰が操作しても一貫した客観的コードレビューを再現できる専用スキルを配備しています：
+- **`strict-code-review`** (`.agents/skills/strict-code-review/SKILL.md`): 型チェック、単体テスト、DDD/Clean Architecture 15項目チェックリスト、ADR同期を自動精査するレビューエンジン。
+
+---
+
 ## AI伴走ルール (agent.md)
 本プロジェクトは学習者とAI（Antigravity）のペアプログラミングで進められています。
 AIが勝手にコードを完成させず、1ステップずつ解説・ディスカッション・テスト・ドキュメント化を徹底するための行動規範を [`agent.md`](agent.md) に定義しています。

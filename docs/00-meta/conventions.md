@@ -72,8 +72,12 @@
 | **`refactor`** | 振る舞いを変えないコードの改善 | `refactor: Result 型のヘルパー関数を整理` |
 | **`chore`** | 環境設定、ビルド構成の変更 | `chore: .gitignore にカバレッジフォルダを追加` |
 
-### Pull Request (PR) 運用
-- 学習の進行中は `main` ブランチに直接ステップ単位でコミット・プッシュし、一定の大きなマイルストーン（フェーズ完了時等）でPRを作成・記録する。
+### Pull Request (PR) 運用規約
+- **Phase 1（基盤構築期）**: `main` 直コミットにて迅速にドメイン基盤を整備（完了）。
+- **Phase 2（Clean Architecture）以降**:
+  - すべての実装は `feature/機能名` ブランチを切って作業を行う。
+  - PR テンプレート（`.github/pull_request_template.md`）に基づき、15項目の厳格レビューチェックリストを埋める。
+  - 専用スキル（`.agents/skills/strict-code-review/`）によるレビューレポートを添付し、承認後に `main` へマージする。
 
 ---
 
