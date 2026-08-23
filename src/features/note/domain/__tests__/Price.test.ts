@@ -13,6 +13,26 @@ describe("Price (価格 Value Object)", () => {
       }
     });
 
+    it("Price.free() で直接無料価格オブジェクトを取得できること", () => {
+      const price = Price.free();
+
+      expect(price.amount).toBe(0);
+      expect(price.isFree()).toBe(true);
+    });
+
+    it("0円の Price は何度生成しても同一インスタンス（キャッシュ・参照一致）を返すこと", () => {
+      const result1 = Price.create(0);
+      const result2 = Price.create(0);
+      const freePrice = Price.free();
+
+      expect(result1.success && result2.success).toBe(true);
+      if (result1.success && result2.success) {
+        // toBe はメモリ上のアドレスが完全に一致することを検証
+        expect(result1.value).toBe(result2.value);
+        expect(result1.value).toBe(freePrice);
+      }
+    });
+
     it("下限値（100円）の価格オブジェクトを正常に生成できること", () => {
       const result = Price.create(100);
 
