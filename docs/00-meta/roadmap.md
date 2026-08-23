@@ -20,19 +20,23 @@ flowchart TD
 
 ## 各フェーズの詳細ゴール
 
-### Phase 0: 環境整備 & AI制御 (現在)
+### Phase 0: 環境整備 & AI制御 (完了)
 - [x] ワークスペース準備 (`ai-note-market`)
 - [x] AI行動制御ルール (`agent.md`)
 - [x] ドキュメント階層構造 (`docs/`)
-- [ ] TypeScript / Vitest の基本環境セットアップ
+- [x] TypeScript / Vitest の基本環境セットアップ
+- [x] Git管理・GitHub連携・PRテンプレート整備
 
-### Phase 1: 【ステップ1】DDD（中身を作る）
+### Phase 1: 【ステップ1】DDD（中身を作る） (進行中: Step 02 準備中)
 - **ゴール**: 外部フレームワークに一切依存しない純粋なドメイン層を実装し、ビジネスルールを強固にカプセル化する。
 - **実装内容**:
-  - `Price` Value Object（無料0円、有料100円〜50,000円）
-  - `Title` / `Content` / `AiCategory` Value Object
-  - `Note` Entity / Aggregate（状態遷移：Draft → Published → Archived）
-  - `Purchase` Entity（購入者、決済金額、購入日時）
+  - [x] 共通基盤: `Result` 型, `DomainError` 基底クラス
+  - [x] `Price` Value Object（無料0円、有料100円〜50,000円）＋ 単体テスト (9 passed)
+  - [ ] `NoteTitle` Value Object（5〜100文字、トリム処理）
+  - [ ] `AiCategory` Value Object（許可されたAI分類）
+  - [ ] `NoteContent` Value Object（本文）
+  - [ ] `Note` Entity / Aggregate（状態遷移：Draft → Published → Archived）
+  - [ ] `Purchase` Entity（購入者、決済金額、購入日時）
 - **テスト**: Vitest による純粋なドメイン単体テスト
 
 ### Phase 2: 【ステップ2】Clean Architecture（器で包む）
