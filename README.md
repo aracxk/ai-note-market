@@ -14,6 +14,7 @@ AI活用ノウハウ・プロンプト・Claude Skills 等の実践的なアイ�
 本リポジトリでは、「なぜその設計にしたのか」をすべて構造化ドキュメントとして残しています。
 
 - **メタ・規約 (docs/00-meta/)**
+  - [プロダクトビジョンと差別化戦略 (product-vision.md)](docs/00-meta/product-vision.md)
   - [学習ロードマップ (roadmap.md)](docs/00-meta/roadmap.md)
   - [コーディング・設計規約 (conventions.md)](docs/00-meta/conventions.md)
   - [AI駆動開発とコンテキスト管理指針 (ai-driven-guidelines.md)](docs/00-meta/ai-driven-guidelines.md)

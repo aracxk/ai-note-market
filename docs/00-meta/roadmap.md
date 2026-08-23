@@ -33,8 +33,8 @@ flowchart TD
   - [x] 共通基盤: `Result` 型, `DomainError` 基底クラス
   - [x] `Price` Value Object（無料0円、有料100円〜100,000円、Flyweight最適化）＋ 単体テスト (11 passed)
   - [x] `NoteTitle` Value Object（5〜100文字、トリム処理）＋ 単体テスト (9 passed)
-  - [x] `Category` Value Object（大カテゴリ×小カテゴリの整合性、Flyweight最適化）＋ 単体テスト (13 passed)
-  - [ ] `NoteContent` Value Object（本文：無料/有料エリア）
+  - [x] `Category` Value Object（大カテゴリ×小カテゴリの整合性、Flyweight最適化）＋ 単体テスト (10 passed)
+  - [x] `NoteContent` Value Object（本文：無料10〜10,000文字 / 有料1〜50,000文字）＋ 単体テスト (15 passed)
   - [ ] `Note` Entity / Aggregate（状態遷移：Draft → Published → Archived）
   - [ ] `Purchase` Entity（購入者、決済金額、購入日時）
 - **テスト**: Vitest による純粋なドメイン単体テスト
