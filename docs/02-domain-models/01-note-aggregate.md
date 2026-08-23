@@ -21,7 +21,7 @@
 | **`AuthorId`** | `string` (UUID) | 記事を執筆した著者のユーザー識別子。 | - |
 | **`NoteTitle`** | `string` | ・5文字以上100文字以内<br>・前後の空白は自動トリム（`trim()`）<br>・空白のみは不可 | `INVALID_NOTE_TITLE_LENGTH` |
 | **`NoteContent`** | `{ freeArea, paidArea }` | ・`freeArea`（無料エリア）: 必須（10〜10,000文字）<br>・`paidArea`（有料エリア）: 有料記事は必須（1〜50,000文字）、無料記事は空文字許容 | `INVALID_FREE_AREA_LENGTH`<br>`PAID_AREA_REQUIRED_FOR_PAID_NOTE` |
-| **`Price`** | `number` | ・0円（無料）または 100円〜50,000円（有料）<br>・整数のみ許容（小数は不可） | `INVALID_PRICE_RANGE` |
+| **`Price`** | `number` | ・0円（無料）または 100円〜100,000円（有料）<br>・整数のみ許容（小数は不可） | `INVALID_PRICE_RANGE` |
 | **`AiCategory`** | `{ major, minor }` | ・大カテゴリと小カテゴリの組み合わせが定義済みリストに合致すること | `INVALID_AI_CATEGORY_COMBINATION` |
 | **`NoteStatus`** | Enum (`DRAFT`, `PUBLISHED`, `ARCHIVED`) | ・状態の表現。直接の外部変更は不可（メソッド経由でのみ遷移） | `INVALID_NOTE_STATUS_TRANSITION` |
 
@@ -69,6 +69,6 @@
 | `INVALID_NOTE_TITLE_LENGTH` | タイトルが5文字未満または100文字超過 |
 | `INVALID_FREE_AREA_LENGTH` | 無料エリア本文が10文字未満または10,000文字超過 |
 | `PAID_AREA_REQUIRED_FOR_PAID_NOTE` | 有料記事（価格>0）なのに有料エリア本文が未設定 |
-| `INVALID_PRICE_RANGE` | 価格が0円以外で100円未満または50,000円超過、または小数 |
+| `INVALID_PRICE_RANGE` | 価格が0円以外で100円未満または100,000円超過、または小数 |
 | `INVALID_AI_CATEGORY_COMBINATION` | 大カテゴリと小カテゴリの組み合わせが不整合 |
 | `INVALID_NOTE_STATUS_TRANSITION` | 不正な状態遷移（例: 必須項目不備のまま公開しようとした等） |

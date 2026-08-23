@@ -27,7 +27,6 @@ describe("Price (価格 Value Object)", () => {
 
       expect(result1.success && result2.success).toBe(true);
       if (result1.success && result2.success) {
-        // toBe はメモリ上のアドレスが完全に一致することを検証
         expect(result1.value).toBe(result2.value);
         expect(result1.value).toBe(freePrice);
       }
@@ -43,12 +42,12 @@ describe("Price (価格 Value Object)", () => {
       }
     });
 
-    it("上限値（50,000円）の価格オブジェクトを正常に生成できること", () => {
-      const result = Price.create(50000);
+    it("上限値（100,000円）の価格オブジェクトを正常に生成できること", () => {
+      const result = Price.create(100000);
 
       expect(result.success).toBe(true);
       if (result.success) {
-        expect(result.value.amount).toBe(50000);
+        expect(result.value.amount).toBe(100000);
         expect(result.value.isFree()).toBe(false);
       }
     });
@@ -95,8 +94,8 @@ describe("Price (価格 Value Object)", () => {
       }
     });
 
-    it("50,001円以上（上限超過）を指定した場合はエラーになること", () => {
-      const result = Price.create(50001);
+    it("100,001円以上（上限超過）を指定した場合はエラーになること", () => {
+      const result = Price.create(100001);
 
       expect(result.success).toBe(false);
       if (!result.success) {

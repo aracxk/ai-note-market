@@ -31,7 +31,7 @@ flowchart TD
 - **ゴール**: 外部フレームワークに一切依存しない純粋なドメイン層を実装し、ビジネスルールを強固にカプセル化する。
 - **実装内容**:
   - [x] 共通基盤: `Result` 型, `DomainError` 基底クラス
-  - [x] `Price` Value Object（無料0円、有料100円〜50,000円）＋ 単体テスト (9 passed)
+  - [x] `Price` Value Object（無料0円、有料100円〜100,000円、Flyweight最適化）＋ 単体テスト (11 passed)
   - [ ] `NoteTitle` Value Object（5〜100文字、トリム処理）
   - [ ] `AiCategory` Value Object（許可されたAI分類）
   - [ ] `NoteContent` Value Object（本文）

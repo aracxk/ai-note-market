@@ -18,7 +18,7 @@ export class InvalidPriceError extends DomainError {
  * 記事の価格を表す値オブジェクト（Value Object）
  *
  * 不変条件（ビジネスルール）:
- * - 0円（無料）または 100円〜50,000円
+ * - 0円（無料）または 100円〜100,000円
  * - 整数値のみ許容（小数は不可）
  *
  * パフォーマンス最適化:
@@ -27,7 +27,7 @@ export class InvalidPriceError extends DomainError {
 export class Price {
   public static readonly FREE_AMOUNT = 0;
   public static readonly MIN_AMOUNT = 100;
-  public static readonly MAX_AMOUNT = 50000;
+  public static readonly MAX_AMOUNT = 100000;
 
   // 0円のインスタンスをキャッシュとして事前に1個だけ保持（Flyweightパターン）
   private static readonly ZERO = new Price(Price.FREE_AMOUNT);
@@ -43,7 +43,7 @@ export class Price {
       return Result.err(new InvalidPriceError(value));
     }
 
-    // 範囲チェック（0円 または 100円〜50,000円）
+    // 範囲チェック（0円 または 100円〜100,000円）
     if (
       value !== Price.FREE_AMOUNT &&
       (value < Price.MIN_AMOUNT || value > Price.MAX_AMOUNT)
