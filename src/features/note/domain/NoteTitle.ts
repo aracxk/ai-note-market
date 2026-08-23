@@ -1,11 +1,12 @@
 import { Result } from "@/shared/core/Result";
 import { DomainError } from "@/shared/domain/DomainError";
+import { DOMAIN_ERROR_CODES } from "@/shared/domain/DomainErrorCode";
 
 /**
  * 記事タイトルの文字数が不正な場合のドメインエラー
  */
 export class InvalidNoteTitleError extends DomainError {
-  readonly code = "INVALID_NOTE_TITLE_LENGTH" as const;
+  readonly code = DOMAIN_ERROR_CODES.INVALID_NOTE_TITLE_LENGTH;
 
   constructor(value: string) {
     super(

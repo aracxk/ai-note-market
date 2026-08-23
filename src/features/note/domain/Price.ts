@@ -1,11 +1,12 @@
 import { Result } from "@/shared/core/Result";
 import { DomainError } from "@/shared/domain/DomainError";
+import { DOMAIN_ERROR_CODES } from "@/shared/domain/DomainErrorCode";
 
 /**
  * 価格が不正な範囲・形式の場合のドメインエラー
  */
 export class InvalidPriceError extends DomainError {
-  readonly code = "INVALID_PRICE_RANGE" as const;
+  readonly code = DOMAIN_ERROR_CODES.INVALID_PRICE_RANGE;
 
   constructor(value: number) {
     super(

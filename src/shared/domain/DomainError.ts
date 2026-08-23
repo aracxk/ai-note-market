@@ -1,18 +1,19 @@
+import { DomainErrorCode } from "./DomainErrorCode";
+
 /**
- * ドメイン層で発生するビジネスルール違反エラーの共通基底クラス
+ * ドメイン層で発生するすべてのエラーの基底クラス
+ *
+ * 責務:
+ * - すべてのドメインエラーに機械判別用の `code`（DomainErrorCode）を強制する。
+ * - 標準の Error クラスを継承し、スタックトレースとメッセージを保持する。
  */
 export abstract class DomainError extends Error {
-  /**
-   * 機械判別・ログ用の一意なエラーコード
-   */
-  abstract readonly code: string;
+  abstract readonly code: DomainErrorCode;
 
   constructor(message: string) {
     super(message);
     this.name = this.constructor.name;
-    // TypeScript/V8 環境でスタックトレースを正しく設定
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, this.constructor);
-    }
+    // TypeScript/V8 環境でのプロトタイプチェーン復元
+    Object.setPrototypeOf(this, new.target.prototype);
   }
 }

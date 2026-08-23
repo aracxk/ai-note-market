@@ -16,25 +16,37 @@
 
 ## 2. 2つの主要アプローチ比較
 
-### アプローチA: 階層化されたドメイン例外 (`DomainError`)
+### アプローチA: 階層化されたドメイン例外 (`DomainError` ＋ `DomainErrorCode` 一元管理)
 
 JavaScript標準の `Error` を継承した基底クラスを用意し、ビジネスルール違反を型として区別する方式。
+エラーコードは `DomainErrorCode.ts` で一元管理し、コンパイルレベルで不正なコードの混入を防止する。
 
 ```typescript
-// 基底クラス
+// 1. エラーコードの一元管理 (src/shared/domain/DomainErrorCode.ts)
+export const DOMAIN_ERROR_CODES = {
+  INVALID_PRICE_RANGE: "INVALID_PRICE_RANGE",
+  INVALID_NOTE_TITLE_LENGTH: "INVALID_NOTE_TITLE_LENGTH",
+  // ...
+} as const;
+
+export type DomainErrorCode =
+  (typeof DOMAIN_ERROR_CODES)[keyof typeof DOMAIN_ERROR_CODES];
+
+// 2. 基底クラス (src/shared/domain/DomainError.ts)
 export abstract class DomainError extends Error {
-  abstract readonly code: string;
+  abstract readonly code: DomainErrorCode; // DomainErrorCode のみを強制
   constructor(message: string) {
     super(message);
     this.name = this.constructor.name;
+    Object.setPrototypeOf(this, new.target.prototype);
   }
 }
 
-// 具体的なドメインエラー
+// 3. 具体的なドメインエラー
 export class InvalidPriceError extends DomainError {
-  readonly code = "INVALID_PRICE_RANGE" as const;
+  readonly code = DOMAIN_ERROR_CODES.INVALID_PRICE_RANGE;
   constructor(value: number) {
-    super(`価格は0円、または100円〜50,000円で指定してください。入力値: ${value}`);
+    super(`価格は0円、または100円〜100,000円で指定してください。入力値: ${value}`);
   }
 }
 ```
@@ -64,7 +76,7 @@ export const Result = {
 // 適用例 (Value Object)
 export class Price {
   public static create(value: number): Result<Price, InvalidPriceError> {
-    if (value !== 0 && (value < 100 || value > 50000)) {
+    if (value !== 0 && (value < 100 || value > 100000)) {
       return Result.err(new InvalidPriceError(value));
     }
     return Result.ok(new Price(value));

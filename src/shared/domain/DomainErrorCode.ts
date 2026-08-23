@@ -1,0 +1,29 @@
+/**
+ * システム全体のドメインエラーコード一覧（一元管理）
+ *
+ * ビジネスルール（不変条件）違反が発生した際に、
+ * 機械判別用の一意な識別子として使用する。
+ */
+export const DOMAIN_ERROR_CODES = {
+  // 記事集約: 価格
+  INVALID_PRICE_RANGE: "INVALID_PRICE_RANGE",
+  // 記事集約: タイトル
+  INVALID_NOTE_TITLE_LENGTH: "INVALID_NOTE_TITLE_LENGTH",
+  // 記事集約: カテゴリ
+  INVALID_AI_CATEGORY_COMBINATION: "INVALID_AI_CATEGORY_COMBINATION",
+  // 記事集約: 本文
+  INVALID_FREE_AREA_LENGTH: "INVALID_FREE_AREA_LENGTH",
+  PAID_AREA_REQUIRED_FOR_PAID_NOTE: "PAID_AREA_REQUIRED_FOR_PAID_NOTE",
+  // 記事集約: ステータス遷移
+  INVALID_NOTE_STATUS_TRANSITION: "INVALID_NOTE_STATUS_TRANSITION",
+  // 購入集約: ビジネスルール
+  CANNOT_PURCHASE_OWN_NOTE: "CANNOT_PURCHASE_OWN_NOTE",
+  NOTE_NOT_FOR_SALE: "NOTE_NOT_FOR_SALE",
+  ALREADY_PURCHASED: "ALREADY_PURCHASED",
+} as const;
+
+/**
+ * ドメインエラーコード型
+ */
+export type DomainErrorCode =
+  (typeof DOMAIN_ERROR_CODES)[keyof typeof DOMAIN_ERROR_CODES];
