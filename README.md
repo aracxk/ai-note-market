@@ -22,7 +22,9 @@ AI活用ノウハウ・プロンプト・Claude Skills 等の実践的なアイ�
   - [エラーハンドリング戦略 (04-error-handling.md)](docs/01-architecture/04-error-handling.md)
   - [テスト設計戦略 (05-testing-strategy.md)](docs/01-architecture/05-testing-strategy.md)
 - **ドメインモデル (docs/02-domain-models/)**
-  - [ドメインモデル概要・ビジネスルール一覧 (overview.md)](docs/02-domain-models/overview.md)
+  - [ドメインモデル全体マップ・用語集 (overview.md)](docs/02-domain-models/overview.md)
+  - [記事集約仕様書 (01-note-aggregate.md)](docs/02-domain-models/01-note-aggregate.md)
+  - [購入集約仕様書 (02-purchase-aggregate.md)](docs/02-domain-models/02-purchase-aggregate.md)
 - **設計決定記録 (docs/03-adr/)**
   - [ADR 0001: 初期アーキテクチャおよび設計方針の採択](docs/03-adr/0001-initial-architecture.md)
   - [ADR 0002: デプロイ基盤としての Vercel 採用および導入計画](docs/03-adr/0002-deployment-platform-vercel.md)
