@@ -1,6 +1,7 @@
 import { Result } from "@/shared/core/Result";
 import { DomainError } from "@/shared/domain/DomainError";
 import { DOMAIN_ERROR_CODES } from "@/shared/domain/DomainErrorCode";
+import { ValueObject } from "@/shared/domain/ValueObject";
 
 /**
  * 大カテゴリ（目的・業務領域）
@@ -54,7 +55,7 @@ export class InvalidCategoryCombinationError extends DomainError {
  * パフォーマンス最適化:
  * - 全組み合わせインスタンスをクラスロード時に事前に Flyweight キャッシュし、使い回す。
  */
-export class Category {
+export class Category extends ValueObject {
   // Flyweight キャッシュマップ（"MAJOR:MINOR" -> Category インスタンス）
   private static readonly CACHE = new Map<string, Category>();
 
@@ -71,7 +72,9 @@ export class Category {
   private constructor(
     public readonly major: MajorCategory,
     public readonly minor: MinorCategory
-  ) {}
+  ) {
+    super();
+  }
 
   /**
    * Category インスタンスを安全に生成する静的ファクトリメソッド

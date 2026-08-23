@@ -1,6 +1,7 @@
 import { Result } from "@/shared/core/Result";
 import { DomainError } from "@/shared/domain/DomainError";
 import { DOMAIN_ERROR_CODES } from "@/shared/domain/DomainErrorCode";
+import { ValueObject } from "@/shared/domain/ValueObject";
 
 /**
  * 価格が不正な範囲・形式の場合のドメインエラー
@@ -25,7 +26,7 @@ export class InvalidPriceError extends DomainError {
  * パフォーマンス最適化:
  * - 0円（無料）のインスタンスは Flyweight パターンにより 1 つのみ生成し使い回す。
  */
-export class Price {
+export class Price extends ValueObject {
   public static readonly FREE_AMOUNT = 0;
   public static readonly MIN_AMOUNT = 100;
   public static readonly MAX_AMOUNT = 100000;
@@ -33,7 +34,9 @@ export class Price {
   // 0円のインスタンスをキャッシュとして事前に1個だけ保持（Flyweightパターン）
   private static readonly ZERO = new Price(Price.FREE_AMOUNT);
 
-  private constructor(private readonly value: number) {}
+  private constructor(private readonly value: number) {
+    super();
+  }
 
   /**
    * Price インスタンスを安全に生成する静的ファクトリメソッド

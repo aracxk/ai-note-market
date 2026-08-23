@@ -35,7 +35,7 @@ flowchart TD
   - [x] `NoteTitle` Value Object（5〜100文字、トリム処理）＋ 単体テスト (9 passed)
   - [x] `Category` Value Object（大カテゴリ×小カテゴリの整合性、Flyweight最適化）＋ 単体テスト (10 passed)
   - [x] `NoteContent` Value Object（本文：無料10〜10,000文字 / 有料1〜50,000文字）＋ 単体テスト (15 passed)
-  - [ ] `Note` Entity / Aggregate（状態遷移：Draft → Published → Archived）
+  - [x] `Note` Entity / Aggregate（状態遷移：Draft → Published → Archived、閲覧認可）＋ 単体テスト (15 passed)
   - [ ] `Purchase` Entity（購入者、決済金額、購入日時）
 - **テスト**: Vitest による純粋なドメイン単体テスト
 

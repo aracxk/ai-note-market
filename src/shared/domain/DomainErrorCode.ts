@@ -5,6 +5,9 @@
  * 機械判別用の一意な識別子として使用する。
  */
 export const DOMAIN_ERROR_CODES = {
+  // 識別子
+  INVALID_USER_ID: "INVALID_USER_ID",
+  INVALID_NOTE_ID: "INVALID_NOTE_ID",
   // 記事集約: 価格
   INVALID_PRICE_RANGE: "INVALID_PRICE_RANGE",
   // 記事集約: タイトル

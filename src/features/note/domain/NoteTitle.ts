@@ -1,6 +1,7 @@
 import { Result } from "@/shared/core/Result";
 import { DomainError } from "@/shared/domain/DomainError";
 import { DOMAIN_ERROR_CODES } from "@/shared/domain/DomainErrorCode";
+import { ValueObject } from "@/shared/domain/ValueObject";
 
 /**
  * 記事タイトルの文字数が不正な場合のドメインエラー
@@ -23,11 +24,13 @@ export class InvalidNoteTitleError extends DomainError {
  * - 前後の空白は自動トリム（trim）する
  * - 空白のみの文字列は不可
  */
-export class NoteTitle {
+export class NoteTitle extends ValueObject {
   public static readonly MIN_LENGTH = 5;
   public static readonly MAX_LENGTH = 100;
 
-  private constructor(private readonly rawValue: string) {}
+  private constructor(private readonly rawValue: string) {
+    super();
+  }
 
   /**
    * NoteTitle インスタンスを安全に生成する静的ファクトリメソッド

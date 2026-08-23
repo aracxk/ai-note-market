@@ -1,6 +1,7 @@
 import { Result } from "@/shared/core/Result";
 import { DomainError } from "@/shared/domain/DomainError";
 import { DOMAIN_ERROR_CODES } from "@/shared/domain/DomainErrorCode";
+import { ValueObject } from "@/shared/domain/ValueObject";
 
 /**
  * 無料エリア本文の文字数ルール違反エラー
@@ -54,7 +55,7 @@ export type NoteContentError =
  *   - 有料記事の場合: 必須。1文字以上 50,000文字以内。
  * - 完全不変（Immutable）。
  */
-export class NoteContent {
+export class NoteContent extends ValueObject {
   public static readonly FREE_AREA_MIN_LENGTH = 10;
   public static readonly FREE_AREA_MAX_LENGTH = 10000;
   public static readonly PAID_AREA_MIN_LENGTH = 1;
@@ -63,7 +64,9 @@ export class NoteContent {
   private constructor(
     public readonly freeArea: string,
     public readonly paidArea: string
-  ) {}
+  ) {
+    super();
+  }
 
   /**
    * 無料記事用の本文オブジェクトを安全に生成する

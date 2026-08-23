@@ -124,3 +124,15 @@
   - 単なるクラスのプロパティやエラーコードの羅列など、`docs/02-domain-models/`（仕様書）やテストコードに書かれている内容を学習ログに再掲・複製してはならない。
 - **記録対象の限定（節目・新概念に特化）**:
   - 学習ログは「新しい設計概念（Result型、Flyweight最適化、集約の境界、DIPなど）」を学んだ際や、「フェーズ完了時の総括」など、深いディスカッションや気づき（Q&A）が発生した節目にのみ作成する。単なる定型実装の作業記録は作成しない。
+
+---
+
+## 11. 基底クラス設計規約（薄い Entity と ValueObject の原則）
+
+- **過剰な共通化の禁止（Fat Base Class の防止）**:
+  - `Entity<ID>` および `ValueObject` 基底クラスには、DB保存やJSONシリアライズ等の余計な便利メソッドを持たせてはならない。
+- **最小限の契約（Contract）の徹底**:
+  - `ValueObject`: `abstract equals(other: this): boolean` のみを義務付ける。
+  - `Entity<ID>`: `protected readonly _id: ID` を保持し、`id` ゲッターおよび `equals(other?: Entity<ID>): boolean`（ID一致判定）のみを提供する。
+- **継承による判別性の向上**:
+  - すべての値オブジェクトは `extends ValueObject` を、すべてのエンティティは `extends Entity<ID>` を継承し、コードの1行目でクラスの性質を一目で判別可能とする。
