@@ -30,4 +30,4 @@
 
 ## 3. 次回へのステップ
 
-- **Step 01**: 最小の Value Object である `Price`（価格ルール: 無料0円 または 100円〜50,000円）を TypeScript クラスとして実装し、Vitest で単体テストを動かしてみる。
+- **Step 01**: 最小の Value Object である `Price`（価格ルール: 無料0円 または 100円〜100,000円）を TypeScript クラスとして実装し、Vitest で単体テストを動かしてみる。
