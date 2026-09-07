@@ -15,6 +15,14 @@
 | **Repository 具象** | 実装方式 + 名詞 + `Repository` | `InMemoryNoteRepository`, `PrismaNoteRepository` | インフラ層で実装 |
 | **DTO / Input** | 名詞 + `Input` / `DTO` | `CreateNoteInput`, `NoteResponseDTO` | レイヤー間のデータ受け渡し |
 
+### ドメインモデルの配置と見分け方（集約ルート原則）
+- **フォルダ名 ＝ 代表エンティティ（集約ルート）**:
+  - `features/<feature_name>/domain/` 配下において、**フォルダ名と一致する単数形大文字ファイル（例: `note/` なら `Note.ts`、`purchase/` なら `Purchase.ts`）が集約の代表エンティティ（Entity）** である。
+- **それ以外のファイル ＝ 部品（Value Object）**:
+  - `domain/` 内に並ぶそれ以外のファイル（`*Id.ts`, `Price.ts`, `*Title.ts` 等）は、すべて代表エンティティを構成する部品（Value Object）である。
+- **フラット配置の根拠**:
+  - 不要なサブフォルダ（`entities/`, `value-objects/`）の乱立を防ぐ代わりに、この命名原則によってファイルの役割を一目で判別可能とする。
+
 ---
 
 ## 2. アーキテクチャの依存方向（最重要ルール）
