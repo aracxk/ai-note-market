@@ -11,7 +11,7 @@
 | **Value Object** | PascalCase | `Price`, `NoteTitle`, `Category`, `UserId` | 原則イミュータブル（イミュータブルな値） |
 | **Entity / 集約** | PascalCase | `Note`, `Purchase`, `User` | 一意なIDを持ち、ライフサイクルを持つ |
 | **UseCase** | 動詞 + 名詞 + `UseCase` | `PublishNoteUseCase`, `PurchaseNoteUseCase` | 1つのユースケースにつき1クラス/関数 |
-| **Repository Interface** | `I` + 名詞 + `Repository` | `INoteRepository`, `IPurchaseRepository` | ドメイン層またはUseCase層で定義 |
+| **Repository Interface** | `I` + 名詞 + `Repository` | `INoteRepository`, `IPurchaseRepository` | UseCase層（`usecases/` 配下）で定義（ポート） |
 | **Repository 具象** | 実装方式 + 名詞 + `Repository` | `InMemoryNoteRepository`, `PrismaNoteRepository` | インフラ層で実装 |
 | **DTO / Input** | 名詞 + `Input` / `DTO` | `CreateNoteInput`, `NoteResponseDTO` | レイヤー間のデータ受け渡し |
 
