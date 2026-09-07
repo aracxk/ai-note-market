@@ -40,20 +40,20 @@ flowchart TD
   - [x] `Purchase` Entity / Aggregate（自己購入禁止、販売状態検証、価格スナップショット）＋ 単体テスト (6 passed)
 - **テスト**: Vitest による純粋なドメイン単体テスト (全85件 All Green, 32ms)
 
-### Phase 2: 【ステップ2】Feature-based Clean Architecture（器で包む）
+### Phase 2: 【ステップ2】Feature-based Clean Architecture（器で包む） (完了)
 - **ゴール**: 各フィーチャー内でドメインを呼び出す手順（UseCase）と永続化の約束事（Repository）を定義し、依存性の逆転（DIP）を体感する。
 - **実装内容**:
   - **記事機能 (`src/features/note/`)**:
-    - `INoteRepository`（インターフェース）
-    - `PublishNoteUseCase`（記事公開ユースケース）
-    - `InMemoryNoteRepository`（テスト用インフラ具象）
-    - ユースケース単体テスト
+    - [x] `INoteRepository`（インターフェース）
+    - [x] `PublishNoteUseCase`（記事公開ユースケース）
+    - [x] `InMemoryNoteRepository`（テスト用インフラ具象）
+    - [x] ユースケース単体テスト
   - **購入機能 (`src/features/purchase/`)**:
-    - `IPurchaseRepository`（インターフェース）
-    - `PurchaseNoteUseCase`（記事購入ユースケース：二重購入防止・自己購入禁止・保存）
-    - `InMemoryPurchaseRepository`（テスト用インフラ具象）
-    - ユースケース単体テスト
-- **テスト**: インメモリリポジトリを用いた高速なユースケース単体テスト
+    - [x] `IPurchaseRepository`（インターフェース）
+    - [x] `PurchaseNoteUseCase`（記事購入ユースケース：二重購入防止・自己購入禁止・保存）
+    - [x] `InMemoryPurchaseRepository`（テスト用インフラ具象）
+    - [x] ユースケース単体テスト
+- **テスト**: インメモリリポジトリを用いた高速なユースケース単体テスト (全18件 All Green)
 
 ### Phase 3: Zod によるスキーマ駆動・境界防御
 - **ゴール**: ドメインルールと外部入力バリデーションの責務を綺麗に分離する。
