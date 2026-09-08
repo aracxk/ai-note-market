@@ -149,3 +149,32 @@
   - `Entity<ID>`: `protected readonly _id: ID` を保持し、`id` ゲッターおよび `equals(other?: Entity<ID>): boolean`（ID一致判定）のみを提供する。
 - **継承による判別性の向上**:
   - すべての値オブジェクトは `extends ValueObject` を、すべてのエンティティは `extends Entity<ID>` を継承し、コードの1行目でクラスの性質を一目で判別可能とする。
+
+---
+
+## 12. Zod スキーマ設計・実装規約（境界防御ルール）
+
+外部から受け取る生データ（HTTPリクエスト、フォーム入力）を安全に検証し、開発者ごとの実装のブレを防ぐための統一ルール。
+
+### ① 配置場所の原則
+- 各フィーチャー直下の `src/features/<feature>/schemas/` に配置する（ADR 0007 準拠）。
+- ドメイン層（`src/**/domain/`）には、いかなる場合も `zod` を import してはならない。
+
+### ② 文字列の空白トリム（.trim()）の必須化
+- ユーザー入力の文字列フィールドは、原則として `.trim()` をチェーンし、前後の不要な空白を自動除去した上で文字数チェックを行う。
+- 空白のみの入力（`"   "`）による文字数チェックのすり抜けを防止する。
+
+### ③ ビジネスルール数値のドメイン定数参照義務
+- 文字数の下限・上限や価格の範囲など、ビジネスルールに関わる数値のベタ書き（ハードコード）を禁止する。
+- 必ずドメイン層で公開されている定数（例: `NoteTitle.MIN_LENGTH`, `Price.MIN_AMOUNT` 等）を import して参照し、ルール変更時の二重管理と修正漏れを撲滅する。
+
+### ④ 相関バリデーションにおける .superRefine() の使用
+- 「価格が有料なら本文必須」のように複数フィールドが連動する検証には、`.refine()` ではなく `.superRefine((data, ctx) => ...)` を使用する。
+- エラー発生時は `ctx.addIssue({ path: ["fieldName"], message: "..." })` を用い、UI側でどの入力欄がエラーであるかを特定可能にする。
+
+### ⑤ 型の自動導出（z.infer）
+- Input DTO 型は手動で `interface` を書かず、必ず `export type XxxInput = z.infer<typeof xxxSchema>;` でスキーマから自動導出する。
+
+### ⑥ Result 型への変換による例外（throw）撲滅
+- 外部生データの検証には `validateSchema(schema, rawData)` 共通ユーティリティを使用し、検証失敗時も例外を投げずに `Result.err(SchemaValidationError)` で安全に処理する。
+
