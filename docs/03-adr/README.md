@@ -15,6 +15,7 @@
 | **[0004](0004-ubiquitous-language-and-naming-conventions.md)** | ユビキタス言語の洗練（Category への汎用化と UserId への型統合） | 承認済 (Accepted) | 2026-08-23 | 過度な具体化を避ける Category へのリネームと、著者・購入者を UserId 型に統一するモデリング決定 |
 | **[0005](0005-category-dimension-redesign.md)** | 記事カテゴリの分類軸再設計（ツール依存から目的領域×成果物形式への普遍化） | 承認済 (Accepted) | 2026-08-23 | ツール名依存を廃止し、目的業務領域（大分類）×成果物形式（小分類）による普遍的カテゴリモデルの採択 |
 | **[0006](0006-repository-interface-placement.md)** | Repository インターフェースの配置場所の決定（usecases/ 配下への配置） | 承認済 (Accepted) | 2026-08-23 | domain/ の純粋性維持と Ports & Adapters パターンに基づく usecases/ 配下への配置決定 |
+| **[0007](0007-zod-schema-placement-and-boundary-defense.md)** | Zod スキーマの配置場所と境界防御（Boundary Defense）方針の決定 | 承認済 (Accepted) | 2026-09-07 | ドメイン純粋性保護・実行時検証・将来のOpenAPI連携を見据えた schemas/ 独立配置の決定 |
 
 ---
 
