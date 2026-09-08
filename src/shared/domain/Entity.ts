@@ -1,4 +1,4 @@
-import { ValueObject } from "./ValueObject";
+import type { ValueObject } from "./ValueObject";
 
 /**
  * すべてのエンティティ（Entity / 集約ルート）の共通基底クラス

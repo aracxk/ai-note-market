@@ -1,8 +1,8 @@
-import { UserId } from "@/shared/domain/UserId";
-import { NoteId } from "@/features/note/domain/NoteId";
-import { IPurchaseRepository } from "../usecases/IPurchaseRepository";
-import { Purchase } from "../domain/Purchase";
-import { PurchaseId } from "../domain/PurchaseId";
+import type { NoteId } from "@/features/note/domain/NoteId";
+import type { UserId } from "@/shared/domain/UserId";
+import type { Purchase } from "../domain/Purchase";
+import type { PurchaseId } from "../domain/PurchaseId";
+import type { IPurchaseRepository } from "../usecases/IPurchaseRepository";
 
 /**
  * テスト・開発用のインメモリ購入リポジトリ (InMemoryPurchaseRepository)

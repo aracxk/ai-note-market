@@ -1,7 +1,7 @@
-import { UserId } from "@/shared/domain/UserId";
-import { INoteRepository } from "../usecases/INoteRepository";
-import { Note } from "../domain/Note";
-import { NoteId } from "../domain/NoteId";
+import type { UserId } from "@/shared/domain/UserId";
+import type { Note } from "../domain/Note";
+import type { NoteId } from "../domain/NoteId";
+import type { INoteRepository } from "../usecases/INoteRepository";
 
 /**
  * テスト・開発用のインメモリ記事リポジトリ (InMemoryNoteRepository)

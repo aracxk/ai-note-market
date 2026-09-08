@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { NoteTitle, InvalidNoteTitleError } from "../NoteTitle";
+import { describe, expect, it } from "vitest";
+import { InvalidNoteTitleError, NoteTitle } from "../NoteTitle";
 
 describe("NoteTitle (記事タイトル Value Object)", () => {
 	describe("正常系", () => {

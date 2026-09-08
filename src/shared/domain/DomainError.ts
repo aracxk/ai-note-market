@@ -1,4 +1,4 @@
-import { DomainErrorCode } from "./DomainErrorCode";
+import type { DomainErrorCode } from "./DomainErrorCode";
 
 /**
  * ドメイン層で発生するすべてのエラーの基底クラス

@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { UserId, InvalidUserIdError } from "../UserId";
+import { describe, expect, it } from "vitest";
+import { InvalidUserIdError, UserId } from "../UserId";
 
 describe("UserId (ユーザー識別子 Value Object)", () => {
 	it("generate() で有効な UUID が生成されること", () => {

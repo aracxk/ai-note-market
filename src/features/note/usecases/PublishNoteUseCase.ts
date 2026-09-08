@@ -2,9 +2,9 @@ import { Result } from "@/shared/core/Result";
 import { DomainError } from "@/shared/domain/DomainError";
 import { DOMAIN_ERROR_CODES } from "@/shared/domain/DomainErrorCode";
 import { UserId } from "@/shared/domain/UserId";
-import { INoteRepository } from "./INoteRepository";
 import { NoteId } from "../domain/NoteId";
-import { NoteStatus } from "../domain/NoteStatus";
+import type { NoteStatus } from "../domain/NoteStatus";
+import type { INoteRepository } from "./INoteRepository";
 
 /**
  * 対象の記事が存在しない場合のドメインエラー

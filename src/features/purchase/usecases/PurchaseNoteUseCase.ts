@@ -1,15 +1,15 @@
+import { NoteId } from "@/features/note/domain/NoteId";
+import type { INoteRepository } from "@/features/note/usecases/INoteRepository";
 import { Result } from "@/shared/core/Result";
 import { DomainError } from "@/shared/domain/DomainError";
 import { DOMAIN_ERROR_CODES } from "@/shared/domain/DomainErrorCode";
 import { UserId } from "@/shared/domain/UserId";
-import { INoteRepository } from "@/features/note/usecases/INoteRepository";
-import { NoteId } from "@/features/note/domain/NoteId";
 import {
+	type CannotPurchaseOwnNoteError,
+	type NoteNotForSaleError,
 	Purchase,
-	CannotPurchaseOwnNoteError,
-	NoteNotForSaleError,
 } from "../domain/Purchase";
-import { IPurchaseRepository } from "./IPurchaseRepository";
+import type { IPurchaseRepository } from "./IPurchaseRepository";
 
 /**
  * 対象の記事が存在しない場合のドメインエラー

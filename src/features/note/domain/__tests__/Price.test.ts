@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { Price, InvalidPriceError } from "../Price";
+import { describe, expect, it } from "vitest";
+import { InvalidPriceError, Price } from "../Price";
 
 describe("Price (価格 Value Object)", () => {
 	describe("正常系", () => {

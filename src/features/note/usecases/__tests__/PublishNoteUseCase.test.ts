@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach } from "vitest";
-import { Result } from "@/shared/core/Result";
+import { beforeEach, describe, expect, it } from "vitest";
+import type { Result } from "@/shared/core/Result";
 import { UserId } from "@/shared/domain/UserId";
 import { Category } from "../../domain/Category";
 import { Note } from "../../domain/Note";
@@ -9,8 +9,8 @@ import { NoteTitle } from "../../domain/NoteTitle";
 import { Price } from "../../domain/Price";
 import { InMemoryNoteRepository } from "../../infrastructure/InMemoryNoteRepository";
 import {
-	PublishNoteUseCase,
 	NoteNotFoundError,
+	PublishNoteUseCase,
 	UnauthorizedNoteAccessError,
 } from "../PublishNoteUseCase";
 

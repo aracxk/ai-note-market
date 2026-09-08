@@ -1,7 +1,7 @@
-import { UserId } from "@/shared/domain/UserId";
-import { NoteId } from "@/features/note/domain/NoteId";
-import { Purchase } from "../domain/Purchase";
-import { PurchaseId } from "../domain/PurchaseId";
+import type { NoteId } from "@/features/note/domain/NoteId";
+import type { UserId } from "@/shared/domain/UserId";
+import type { Purchase } from "../domain/Purchase";
+import type { PurchaseId } from "../domain/PurchaseId";
 
 /**
  * 購入リポジトリ・インターフェース (IPurchaseRepository)

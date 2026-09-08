@@ -2,23 +2,19 @@ import { Result } from "@/shared/core/Result";
 import { DomainError } from "@/shared/domain/DomainError";
 import { DOMAIN_ERROR_CODES } from "@/shared/domain/DomainErrorCode";
 import { Entity } from "@/shared/domain/Entity";
-import { UserId } from "@/shared/domain/UserId";
-import { Category } from "./Category";
-import { NoteContent } from "./NoteContent";
+import type { UserId } from "@/shared/domain/UserId";
+import type { Category } from "./Category";
+import type { NoteContent } from "./NoteContent";
 import { NoteId } from "./NoteId";
-import { NOTE_STATUS, NoteStatus } from "./NoteStatus";
-import { NoteTitle } from "./NoteTitle";
-import { Price } from "./Price";
+import { NOTE_STATUS, type NoteStatus } from "./NoteStatus";
+import type { NoteTitle } from "./NoteTitle";
+import type { Price } from "./Price";
 
 /**
  * 不正な状態遷移を試みた場合のドメインエラー
  */
 export class InvalidNoteStatusTransitionError extends DomainError {
 	readonly code = DOMAIN_ERROR_CODES.INVALID_NOTE_STATUS_TRANSITION;
-
-	constructor(message: string) {
-		super(message);
-	}
 }
 
 /**

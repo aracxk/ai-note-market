@@ -1,4 +1,4 @@
-import { ZodError } from "zod";
+import type { ZodError } from "zod";
 
 /**
  * 入力フィールドごとの検証エラー詳細

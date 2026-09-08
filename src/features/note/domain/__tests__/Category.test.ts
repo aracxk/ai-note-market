@@ -1,9 +1,9 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
 	Category,
 	InvalidCategoryCombinationError,
-	MajorCategory,
-	MinorCategory,
+	type MajorCategory,
+	type MinorCategory,
 } from "../Category";
 
 describe("Category (カテゴリ Value Object)", () => {

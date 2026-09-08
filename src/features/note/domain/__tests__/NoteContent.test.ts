@@ -1,9 +1,9 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
-	NoteContent,
 	InvalidFreeAreaLengthError,
-	PaidAreaRequiredForPaidNoteError,
 	InvalidPaidAreaLengthError,
+	NoteContent,
+	PaidAreaRequiredForPaidNoteError,
 } from "../NoteContent";
 
 describe("NoteContent (記事本文 Value Object)", () => {

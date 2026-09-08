@@ -1,11 +1,11 @@
-import { describe, it, expect, beforeEach } from "vitest";
-import { Result } from "@/shared/core/Result";
-import { UserId } from "@/shared/domain/UserId";
+import { beforeEach, describe, expect, it } from "vitest";
 import { Category } from "@/features/note/domain/Category";
 import { Note } from "@/features/note/domain/Note";
 import { NoteContent } from "@/features/note/domain/NoteContent";
 import { NoteTitle } from "@/features/note/domain/NoteTitle";
 import { Price } from "@/features/note/domain/Price";
+import type { Result } from "@/shared/core/Result";
+import { UserId } from "@/shared/domain/UserId";
 import { Purchase } from "../../domain/Purchase";
 import { PurchaseId } from "../../domain/PurchaseId";
 import { InMemoryPurchaseRepository } from "../InMemoryPurchaseRepository";

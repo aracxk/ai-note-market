@@ -1,16 +1,16 @@
-import { describe, it, expect } from "vitest";
-import { Result } from "@/shared/core/Result";
-import { UserId } from "@/shared/domain/UserId";
+import { describe, expect, it } from "vitest";
 import { Category } from "@/features/note/domain/Category";
 import { Note } from "@/features/note/domain/Note";
 import { NoteContent } from "@/features/note/domain/NoteContent";
 import { NoteId } from "@/features/note/domain/NoteId";
 import { NoteTitle } from "@/features/note/domain/NoteTitle";
 import { Price } from "@/features/note/domain/Price";
+import type { Result } from "@/shared/core/Result";
+import { UserId } from "@/shared/domain/UserId";
 import {
-	Purchase,
 	CannotPurchaseOwnNoteError,
 	NoteNotForSaleError,
+	Purchase,
 } from "../Purchase";
 import { PurchaseId } from "../PurchaseId";
 

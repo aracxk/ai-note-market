@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { NoteId, InvalidNoteIdError } from "../NoteId";
+import { describe, expect, it } from "vitest";
+import { InvalidNoteIdError, NoteId } from "../NoteId";
 
 describe("NoteId (記事識別子 Value Object)", () => {
 	it("generate() で有効な UUID が生成されること", () => {

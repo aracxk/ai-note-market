@@ -1,6 +1,6 @@
-import { UserId } from "@/shared/domain/UserId";
-import { Note } from "../domain/Note";
-import { NoteId } from "../domain/NoteId";
+import type { UserId } from "@/shared/domain/UserId";
+import type { Note } from "../domain/Note";
+import type { NoteId } from "../domain/NoteId";
 
 /**
  * 記事リポジトリ・インターフェース (INoteRepository)

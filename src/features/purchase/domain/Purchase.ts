@@ -1,11 +1,11 @@
+import type { Note } from "@/features/note/domain/Note";
+import type { NoteId } from "@/features/note/domain/NoteId";
+import type { Price } from "@/features/note/domain/Price";
 import { Result } from "@/shared/core/Result";
 import { DomainError } from "@/shared/domain/DomainError";
 import { DOMAIN_ERROR_CODES } from "@/shared/domain/DomainErrorCode";
 import { Entity } from "@/shared/domain/Entity";
-import { UserId } from "@/shared/domain/UserId";
-import { Note } from "@/features/note/domain/Note";
-import { NoteId } from "@/features/note/domain/NoteId";
-import { Price } from "@/features/note/domain/Price";
+import type { UserId } from "@/shared/domain/UserId";
 import { PurchaseId } from "./PurchaseId";
 
 /**

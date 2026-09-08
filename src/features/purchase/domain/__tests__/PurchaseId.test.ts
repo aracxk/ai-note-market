@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { PurchaseId, InvalidPurchaseIdError } from "../PurchaseId";
+import { describe, expect, it } from "vitest";
+import { InvalidPurchaseIdError, PurchaseId } from "../PurchaseId";
 
 describe("PurchaseId (購入識別子 Value Object)", () => {
 	it("generate() で有効な UUID が生成されること", () => {

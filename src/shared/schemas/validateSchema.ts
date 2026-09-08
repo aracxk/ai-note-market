@@ -1,4 +1,4 @@
-import { z } from "zod";
+import type { z } from "zod";
 import { Result } from "@/shared/core/Result";
 import { SchemaValidationError } from "./ValidationError";
 

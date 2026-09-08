@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { Result } from "@/shared/core/Result";
+import { describe, expect, it } from "vitest";
+import type { Result } from "@/shared/core/Result";
 import { UserId } from "@/shared/domain/UserId";
 import { Category } from "../Category";
 import { Note } from "../Note";
