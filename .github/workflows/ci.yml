@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write # PRにコメントを書き込むための権限
+      contents: read # コードをチェックアウトするための権限
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
