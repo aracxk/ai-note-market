@@ -10,6 +10,20 @@ export default defineConfig({
 			provider: "v8",
 			reporter: ["text", "json-summary", "json", "html"],
 			exclude: ["src/app/**", "**/*.test.ts", "**/__tests__/**", ".next/**"],
+			thresholds: {
+				"src/features/**/domain/**": {
+					statements: 100,
+					branches: 100,
+					functions: 100,
+					lines: 100,
+				},
+				"src/features/**/usecases/**": {
+					statements: 80,
+					branches: 80,
+					functions: 90,
+					lines: 80,
+				},
+			},
 		},
 	},
 	resolve: {
