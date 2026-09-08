@@ -23,3 +23,5 @@ Key Rules:
 3. Optimize Value Objects using static factory methods and Flyweight caching where applicable.
 4. When changing constants or business rules, ALWAYS perform a project-wide grep search to ensure 100% consistency across comments, JSDoc, tests, and docs.
 5. ALWAYS proactively propose creating/updating an ADR in `docs/03-adr/` whenever a design or business rationale (Why) is discussed.
+6. Group files by Feature and Aggregate Root (e.g., `src/features/<feature>/domain/`). The folder name must match the aggregate root entity name.
+7. Zod schemas for boundary defense MUST be placed in `src/features/<feature>/schemas/`, not in the domain layer, and should reference domain constants (ADR 0007).
