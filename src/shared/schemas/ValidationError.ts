@@ -1,11 +1,11 @@
-import { ZodError } from "zod";
+import type { ZodError } from "zod";
 
 /**
  * 入力フィールドごとの検証エラー詳細
  */
 export interface FieldErrorDetail {
-  field: string;
-  message: string;
+	field: string;
+	message: string;
 }
 
 /**
@@ -16,21 +16,21 @@ export interface FieldErrorDetail {
  *   「フィールド名」と「エラーメッセージ」の配列に整形する。
  */
 export class SchemaValidationError extends Error {
-  public readonly name = "SchemaValidationError";
-  public readonly code = "SCHEMA_VALIDATION_ERROR";
-  public readonly fieldErrors: FieldErrorDetail[];
+	public readonly name = "SchemaValidationError";
+	public readonly code = "SCHEMA_VALIDATION_ERROR";
+	public readonly fieldErrors: FieldErrorDetail[];
 
-  constructor(zodError: ZodError) {
-    const fieldErrors = zodError.errors.map((e) => ({
-      field: e.path.join(".") || "root",
-      message: e.message,
-    }));
+	constructor(zodError: ZodError) {
+		const fieldErrors = zodError.errors.map((e) => ({
+			field: e.path.join(".") || "root",
+			message: e.message,
+		}));
 
-    const summary = fieldErrors
-      .map((e) => `[${e.field}]: ${e.message}`)
-      .join(", ");
+		const summary = fieldErrors
+			.map((e) => `[${e.field}]: ${e.message}`)
+			.join(", ");
 
-    super(`入力データの検証に失敗しました: ${summary}`);
-    this.fieldErrors = fieldErrors;
-  }
+		super(`入力データの検証に失敗しました: ${summary}`);
+		this.fieldErrors = fieldErrors;
+	}
 }

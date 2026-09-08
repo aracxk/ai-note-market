@@ -1,7 +1,7 @@
-import { UserId } from "@/shared/domain/UserId";
-import { NoteId } from "@/features/note/domain/NoteId";
-import { Purchase } from "../domain/Purchase";
-import { PurchaseId } from "../domain/PurchaseId";
+import type { NoteId } from "@/features/note/domain/NoteId";
+import type { UserId } from "@/shared/domain/UserId";
+import type { Purchase } from "../domain/Purchase";
+import type { PurchaseId } from "../domain/PurchaseId";
 
 /**
  * 購入リポジトリ・インターフェース (IPurchaseRepository)
@@ -12,23 +12,23 @@ import { PurchaseId } from "../domain/PurchaseId";
  *   domain/ を純粋なビジネスモデルのみに保ち、DIP（依存性の逆転）を実現する。
  */
 export interface IPurchaseRepository {
-  /**
-   * 購入集約を保存する
-   */
-  save(purchase: Purchase): Promise<void>;
+	/**
+	 * 購入集約を保存する
+	 */
+	save(purchase: Purchase): Promise<void>;
 
-  /**
-   * 購入IDを指定して購入集約を1件取得する（存在しない場合は null）
-   */
-  findById(id: PurchaseId): Promise<Purchase | null>;
+	/**
+	 * 購入IDを指定して購入集約を1件取得する（存在しない場合は null）
+	 */
+	findById(id: PurchaseId): Promise<Purchase | null>;
 
-  /**
-   * 指定したユーザーが対象の記事を既に購入済みかどうかを判定する
-   */
-  hasPurchased(buyerId: UserId, noteId: NoteId): Promise<boolean>;
+	/**
+	 * 指定したユーザーが対象の記事を既に購入済みかどうかを判定する
+	 */
+	hasPurchased(buyerId: UserId, noteId: NoteId): Promise<boolean>;
 
-  /**
-   * 購入者IDを指定して、そのユーザーの全購入履歴を取得する
-   */
-  findByBuyerId(buyerId: UserId): Promise<Purchase[]>;
+	/**
+	 * 購入者IDを指定して、そのユーザーの全購入履歴を取得する
+	 */
+	findByBuyerId(buyerId: UserId): Promise<Purchase[]>;
 }

@@ -1,6 +1,6 @@
-import { UserId } from "@/shared/domain/UserId";
-import { Note } from "../domain/Note";
-import { NoteId } from "../domain/NoteId";
+import type { UserId } from "@/shared/domain/UserId";
+import type { Note } from "../domain/Note";
+import type { NoteId } from "../domain/NoteId";
 
 /**
  * 記事リポジトリ・インターフェース (INoteRepository)
@@ -11,18 +11,18 @@ import { NoteId } from "../domain/NoteId";
  *   domain/ を純粋なビジネスモデルのみに保ち、DIP（依存性の逆転）を実現する。
  */
 export interface INoteRepository {
-  /**
-   * 記事集約を保存（新規作成または更新）する
-   */
-  save(note: Note): Promise<void>;
+	/**
+	 * 記事集約を保存（新規作成または更新）する
+	 */
+	save(note: Note): Promise<void>;
 
-  /**
-   * 記事IDを指定して記事集約を1件取得する（存在しない場合は null）
-   */
-  findById(id: NoteId): Promise<Note | null>;
+	/**
+	 * 記事IDを指定して記事集約を1件取得する（存在しない場合は null）
+	 */
+	findById(id: NoteId): Promise<Note | null>;
 
-  /**
-   * 著者IDを指定して、その著者が執筆したすべての記事を取得する
-   */
-  findByAuthorId(authorId: UserId): Promise<Note[]>;
+	/**
+	 * 著者IDを指定して、その著者が執筆したすべての記事を取得する
+	 */
+	findByAuthorId(authorId: UserId): Promise<Note[]>;
 }

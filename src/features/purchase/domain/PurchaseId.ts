@@ -7,11 +7,11 @@ import { ValueObject } from "@/shared/domain/ValueObject";
  * 購入IDの値が不正な場合のドメインエラー
  */
 export class InvalidPurchaseIdError extends DomainError {
-  readonly code = DOMAIN_ERROR_CODES.INVALID_PURCHASE_ID;
+	readonly code = DOMAIN_ERROR_CODES.INVALID_PURCHASE_ID;
 
-  constructor(value: string) {
-    super(`無効な購入IDです: "${value}"`);
-  }
+	constructor(value: string) {
+		super(`無効な購入IDです: "${value}"`);
+	}
 }
 
 /**
@@ -23,34 +23,34 @@ export class InvalidPurchaseIdError extends DomainError {
  * - 完全不変（Immutable）。
  */
 export class PurchaseId extends ValueObject {
-  private constructor(public readonly value: string) {
-    super();
-  }
+	private constructor(public readonly value: string) {
+		super();
+	}
 
-  /**
-   * ランダムな UUID から新しい PurchaseId を自動採番する
-   */
-  public static generate(): PurchaseId {
-    return new PurchaseId(crypto.randomUUID());
-  }
+	/**
+	 * ランダムな UUID から新しい PurchaseId を自動採番する
+	 */
+	public static generate(): PurchaseId {
+		return new PurchaseId(crypto.randomUUID());
+	}
 
-  /**
-   * 既存の文字列から PurchaseId を生成・検証する（DBからの復元用）
-   */
-  public static create(
-    value: string
-  ): Result<PurchaseId, InvalidPurchaseIdError> {
-    const trimmed = value.trim();
-    if (trimmed.length === 0) {
-      return Result.err(new InvalidPurchaseIdError(value));
-    }
-    return Result.ok(new PurchaseId(trimmed));
-  }
+	/**
+	 * 既存の文字列から PurchaseId を生成・検証する（DBからの復元用）
+	 */
+	public static create(
+		value: string,
+	): Result<PurchaseId, InvalidPurchaseIdError> {
+		const trimmed = value.trim();
+		if (trimmed.length === 0) {
+			return Result.err(new InvalidPurchaseIdError(value));
+		}
+		return Result.ok(new PurchaseId(trimmed));
+	}
 
-  /**
-   * 同値性の判定
-   */
-  public equals(other: PurchaseId): boolean {
-    return this.value === other.value;
-  }
+	/**
+	 * 同値性の判定
+	 */
+	public equals(other: PurchaseId): boolean {
+		return this.value === other.value;
+	}
 }

@@ -9,15 +9,15 @@ import { z } from "zod";
  * - purchasedAt: オプション（Date または ISO 8601 文字列）
  */
 export const purchaseNoteSchema = z.object({
-  noteId: z
-    .string({ required_error: "記事IDは必須です" })
-    .trim()
-    .min(1, "記事IDは必須です"),
-  buyerId: z
-    .string({ required_error: "購入者IDは必須です" })
-    .trim()
-    .min(1, "購入者IDは必須です"),
-  purchasedAt: z.coerce.date().optional(),
+	noteId: z
+		.string({ required_error: "記事IDは必須です" })
+		.trim()
+		.min(1, "記事IDは必須です"),
+	buyerId: z
+		.string({ required_error: "購入者IDは必須です" })
+		.trim()
+		.min(1, "購入者IDは必須です"),
+	purchasedAt: z.coerce.date().optional(),
 });
 
 /**

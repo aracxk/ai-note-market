@@ -1,8 +1,8 @@
-import { UserId } from "@/shared/domain/UserId";
-import { NoteId } from "@/features/note/domain/NoteId";
-import { IPurchaseRepository } from "../usecases/IPurchaseRepository";
-import { Purchase } from "../domain/Purchase";
-import { PurchaseId } from "../domain/PurchaseId";
+import type { NoteId } from "@/features/note/domain/NoteId";
+import type { UserId } from "@/shared/domain/UserId";
+import type { Purchase } from "../domain/Purchase";
+import type { PurchaseId } from "../domain/PurchaseId";
+import type { IPurchaseRepository } from "../usecases/IPurchaseRepository";
 
 /**
  * テスト・開発用のインメモリ購入リポジトリ (InMemoryPurchaseRepository)
@@ -13,48 +13,48 @@ import { PurchaseId } from "../domain/PurchaseId";
  *   UseCase の単体テストを数ミリ秒で高速実行可能にする。
  */
 export class InMemoryPurchaseRepository implements IPurchaseRepository {
-  private readonly purchases = new Map<string, Purchase>();
+	private readonly purchases = new Map<string, Purchase>();
 
-  /**
-   * 購入データをメモリ内に保存（作成または上書き）する
-   */
-  public async save(purchase: Purchase): Promise<void> {
-    this.purchases.set(purchase.id.value, purchase);
-  }
+	/**
+	 * 購入データをメモリ内に保存（作成または上書き）する
+	 */
+	public async save(purchase: Purchase): Promise<void> {
+		this.purchases.set(purchase.id.value, purchase);
+	}
 
-  /**
-   * 購入IDでメモリ内を検索する
-   */
-  public async findById(id: PurchaseId): Promise<Purchase | null> {
-    const found = this.purchases.get(id.value);
-    return found ?? null;
-  }
+	/**
+	 * 購入IDでメモリ内を検索する
+	 */
+	public async findById(id: PurchaseId): Promise<Purchase | null> {
+		const found = this.purchases.get(id.value);
+		return found ?? null;
+	}
 
-  /**
-   * 指定したユーザーが対象の記事を既に購入済みかどうかを判定する
-   */
-  public async hasPurchased(buyerId: UserId, noteId: NoteId): Promise<boolean> {
-    for (const purchase of this.purchases.values()) {
-      if (purchase.buyerId.equals(buyerId) && purchase.noteId.equals(noteId)) {
-        return true;
-      }
-    }
-    return false;
-  }
+	/**
+	 * 指定したユーザーが対象の記事を既に購入済みかどうかを判定する
+	 */
+	public async hasPurchased(buyerId: UserId, noteId: NoteId): Promise<boolean> {
+		for (const purchase of this.purchases.values()) {
+			if (purchase.buyerId.equals(buyerId) && purchase.noteId.equals(noteId)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-  /**
-   * 購入者IDでメモリ内をフィルタリングして全件取得する
-   */
-  public async findByBuyerId(buyerId: UserId): Promise<Purchase[]> {
-    return Array.from(this.purchases.values()).filter((p) =>
-      p.buyerId.equals(buyerId)
-    );
-  }
+	/**
+	 * 購入者IDでメモリ内をフィルタリングして全件取得する
+	 */
+	public async findByBuyerId(buyerId: UserId): Promise<Purchase[]> {
+		return Array.from(this.purchases.values()).filter((p) =>
+			p.buyerId.equals(buyerId),
+		);
+	}
 
-  /**
-   * テスト間のデータ分離用のヘルパーメソッド（全件クリア）
-   */
-  public clear(): void {
-    this.purchases.clear();
-  }
+	/**
+	 * テスト間のデータ分離用のヘルパーメソッド（全件クリア）
+	 */
+	public clear(): void {
+		this.purchases.clear();
+	}
 }
