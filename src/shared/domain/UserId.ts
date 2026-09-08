@@ -7,11 +7,11 @@ import { ValueObject } from "./ValueObject";
  * ユーザーIDの値が不正な場合のドメインエラー
  */
 export class InvalidUserIdError extends DomainError {
-  readonly code = DOMAIN_ERROR_CODES.INVALID_USER_ID;
+	readonly code = DOMAIN_ERROR_CODES.INVALID_USER_ID;
 
-  constructor(value: string) {
-    super(`無効なユーザーIDです: "${value}"`);
-  }
+	constructor(value: string) {
+		super(`無効なユーザーIDです: "${value}"`);
+	}
 }
 
 /**
@@ -23,32 +23,32 @@ export class InvalidUserIdError extends DomainError {
  * - 完全不変（Immutable）。
  */
 export class UserId extends ValueObject {
-  private constructor(public readonly value: string) {
-    super();
-  }
+	private constructor(public readonly value: string) {
+		super();
+	}
 
-  /**
-   * ランダムな UUID から新しい UserId を自動採番する
-   */
-  public static generate(): UserId {
-    return new UserId(crypto.randomUUID());
-  }
+	/**
+	 * ランダムな UUID から新しい UserId を自動採番する
+	 */
+	public static generate(): UserId {
+		return new UserId(crypto.randomUUID());
+	}
 
-  /**
-   * 既存の文字列から UserId を生成・検証する（DBや認証からの復元用）
-   */
-  public static create(value: string): Result<UserId, InvalidUserIdError> {
-    const trimmed = value.trim();
-    if (trimmed.length === 0) {
-      return Result.err(new InvalidUserIdError(value));
-    }
-    return Result.ok(new UserId(trimmed));
-  }
+	/**
+	 * 既存の文字列から UserId を生成・検証する（DBや認証からの復元用）
+	 */
+	public static create(value: string): Result<UserId, InvalidUserIdError> {
+		const trimmed = value.trim();
+		if (trimmed.length === 0) {
+			return Result.err(new InvalidUserIdError(value));
+		}
+		return Result.ok(new UserId(trimmed));
+	}
 
-  /**
-   * 同値性の判定
-   */
-  public equals(other: UserId): boolean {
-    return this.value === other.value;
-  }
+	/**
+	 * 同値性の判定
+	 */
+	public equals(other: UserId): boolean {
+		return this.value === other.value;
+	}
 }

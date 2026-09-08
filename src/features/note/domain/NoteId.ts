@@ -7,11 +7,11 @@ import { ValueObject } from "@/shared/domain/ValueObject";
  * 記事IDの値が不正な場合のドメインエラー
  */
 export class InvalidNoteIdError extends DomainError {
-  readonly code = DOMAIN_ERROR_CODES.INVALID_NOTE_ID;
+	readonly code = DOMAIN_ERROR_CODES.INVALID_NOTE_ID;
 
-  constructor(value: string) {
-    super(`無効な記事IDです: "${value}"`);
-  }
+	constructor(value: string) {
+		super(`無効な記事IDです: "${value}"`);
+	}
 }
 
 /**
@@ -23,32 +23,32 @@ export class InvalidNoteIdError extends DomainError {
  * - 完全不変（Immutable）。
  */
 export class NoteId extends ValueObject {
-  private constructor(public readonly value: string) {
-    super();
-  }
+	private constructor(public readonly value: string) {
+		super();
+	}
 
-  /**
-   * ランダムな UUID から新しい NoteId を自動採番する
-   */
-  public static generate(): NoteId {
-    return new NoteId(crypto.randomUUID());
-  }
+	/**
+	 * ランダムな UUID から新しい NoteId を自動採番する
+	 */
+	public static generate(): NoteId {
+		return new NoteId(crypto.randomUUID());
+	}
 
-  /**
-   * 既存の文字列から NoteId を生成・検証する（DBからの復元用）
-   */
-  public static create(value: string): Result<NoteId, InvalidNoteIdError> {
-    const trimmed = value.trim();
-    if (trimmed.length === 0) {
-      return Result.err(new InvalidNoteIdError(value));
-    }
-    return Result.ok(new NoteId(trimmed));
-  }
+	/**
+	 * 既存の文字列から NoteId を生成・検証する（DBからの復元用）
+	 */
+	public static create(value: string): Result<NoteId, InvalidNoteIdError> {
+		const trimmed = value.trim();
+		if (trimmed.length === 0) {
+			return Result.err(new InvalidNoteIdError(value));
+		}
+		return Result.ok(new NoteId(trimmed));
+	}
 
-  /**
-   * 同値性の判定
-   */
-  public equals(other: NoteId): boolean {
-    return this.value === other.value;
-  }
+	/**
+	 * 同値性の判定
+	 */
+	public equals(other: NoteId): boolean {
+		return this.value === other.value;
+	}
 }

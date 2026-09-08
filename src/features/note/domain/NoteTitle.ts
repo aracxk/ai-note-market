@@ -7,13 +7,13 @@ import { ValueObject } from "@/shared/domain/ValueObject";
  * 記事タイトルの文字数が不正な場合のドメインエラー
  */
 export class InvalidNoteTitleError extends DomainError {
-  readonly code = DOMAIN_ERROR_CODES.INVALID_NOTE_TITLE_LENGTH;
+	readonly code = DOMAIN_ERROR_CODES.INVALID_NOTE_TITLE_LENGTH;
 
-  constructor(value: string) {
-    super(
-      `記事タイトルは${NoteTitle.MIN_LENGTH}文字以上、${NoteTitle.MAX_LENGTH}文字以内で指定してください。入力値: "${value}"`
-    );
-  }
+	constructor(value: string) {
+		super(
+			`記事タイトルは${NoteTitle.MIN_LENGTH}文字以上、${NoteTitle.MAX_LENGTH}文字以内で指定してください。入力値: "${value}"`,
+		);
+	}
 }
 
 /**
@@ -25,40 +25,42 @@ export class InvalidNoteTitleError extends DomainError {
  * - 空白のみの文字列は不可
  */
 export class NoteTitle extends ValueObject {
-  public static readonly MIN_LENGTH = 5;
-  public static readonly MAX_LENGTH = 100;
+	public static readonly MIN_LENGTH = 5;
+	public static readonly MAX_LENGTH = 100;
 
-  private constructor(private readonly rawValue: string) {
-    super();
-  }
+	private constructor(private readonly rawValue: string) {
+		super();
+	}
 
-  /**
-   * NoteTitle インスタンスを安全に生成する静的ファクトリメソッド
-   */
-  public static create(value: string): Result<NoteTitle, InvalidNoteTitleError> {
-    const trimmed = value.trim();
+	/**
+	 * NoteTitle インスタンスを安全に生成する静的ファクトリメソッド
+	 */
+	public static create(
+		value: string,
+	): Result<NoteTitle, InvalidNoteTitleError> {
+		const trimmed = value.trim();
 
-    if (
-      trimmed.length < NoteTitle.MIN_LENGTH ||
-      trimmed.length > NoteTitle.MAX_LENGTH
-    ) {
-      return Result.err(new InvalidNoteTitleError(value));
-    }
+		if (
+			trimmed.length < NoteTitle.MIN_LENGTH ||
+			trimmed.length > NoteTitle.MAX_LENGTH
+		) {
+			return Result.err(new InvalidNoteTitleError(value));
+		}
 
-    return Result.ok(new NoteTitle(trimmed));
-  }
+		return Result.ok(new NoteTitle(trimmed));
+	}
 
-  /**
-   * 値オブジェクトの同値性を判定する
-   */
-  public equals(other: NoteTitle): boolean {
-    return this.rawValue === other.rawValue;
-  }
+	/**
+	 * 値オブジェクトの同値性を判定する
+	 */
+	public equals(other: NoteTitle): boolean {
+		return this.rawValue === other.rawValue;
+	}
 
-  /**
-   * トリム済みのタイトル文字列を取得する
-   */
-  public get value(): string {
-    return this.rawValue;
-  }
+	/**
+	 * トリム済みのタイトル文字列を取得する
+	 */
+	public get value(): string {
+		return this.rawValue;
+	}
 }

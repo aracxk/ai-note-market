@@ -7,8 +7,8 @@
  * - 余計な便利メソッドやDB依存を一切排除した、破綻しない薄い基底クラス。
  */
 export abstract class ValueObject {
-  /**
-   * 2つの値オブジェクトが「同じ値」を持っているかを判定する
-   */
-  public abstract equals(other: this): boolean;
+	/**
+	 * 2つの値オブジェクトが「同じ値」を持っているかを判定する
+	 */
+	public abstract equals(other: this): boolean;
 }
