@@ -170,6 +170,33 @@ describe("NoteContent (記事本文 Value Object)", () => {
 			}
 		});
 
+		it("汎用createメソッドで有料記事として作成する際、paidAreaが未指定(undefined)の場合はエラーになること", () => {
+			const result = NoteContent.create({
+				freeArea: "1234567890",
+				isPaid: true,
+				// paidArea omit
+			});
+
+			expect(result.success).toBe(false);
+			if (!result.success) {
+				expect(result.error).toBeInstanceOf(PaidAreaRequiredForPaidNoteError);
+				expect(result.error.code).toBe("PAID_AREA_REQUIRED_FOR_PAID_NOTE");
+			}
+		});
+
+		it("有料記事作成時に無料エリアが上限超過の場合はエラーになること", () => {
+			const result = NoteContent.createPaid({
+				freeArea: "あ".repeat(10001),
+				paidArea: "有料コンテンツ",
+			});
+
+			expect(result.success).toBe(false);
+			if (!result.success) {
+				expect(result.error).toBeInstanceOf(InvalidFreeAreaLengthError);
+				expect(result.error.code).toBe("INVALID_FREE_AREA_LENGTH");
+			}
+		});
+
 		it("有料記事で有料エリアが空白のみの場合はエラーになること", () => {
 			const result = NoteContent.createPaid({
 				freeArea: "1234567890",

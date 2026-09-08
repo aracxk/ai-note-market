@@ -11,13 +11,6 @@ import type { NoteTitle } from "./NoteTitle";
 import type { Price } from "./Price";
 
 /**
- * 不正な状態遷移を試みた場合のドメインエラー
- */
-export class InvalidNoteStatusTransitionError extends DomainError {
-	readonly code = DOMAIN_ERROR_CODES.INVALID_NOTE_STATUS_TRANSITION;
-}
-
-/**
  * 記事集約ルート（Note Aggregate Root / Entity）
  *
  * 責務:
@@ -96,9 +89,7 @@ export class Note extends Entity<NoteId> {
 	/**
 	 * 記事を公開状態にする（DRAFT / ARCHIVED -> PUBLISHED）
 	 */
-	public publish(
-		now: Date = new Date(),
-	): Result<void, InvalidNoteStatusTransitionError> {
+	public publish(now: Date = new Date()): Result<void, never> {
 		if (this._status === NOTE_STATUS.PUBLISHED) {
 			return Result.ok(undefined); // 既に公開済みの場合は冪等に成功
 		}
@@ -111,9 +102,7 @@ export class Note extends Entity<NoteId> {
 	/**
 	 * 記事の販売を停止（アーカイブ）する（PUBLISHED -> ARCHIVED）
 	 */
-	public archive(
-		now: Date = new Date(),
-	): Result<void, InvalidNoteStatusTransitionError> {
+	public archive(now: Date = new Date()): Result<void, never> {
 		if (this._status === NOTE_STATUS.ARCHIVED) {
 			return Result.ok(undefined); // 既に停止済みの場合は冪等に成功
 		}

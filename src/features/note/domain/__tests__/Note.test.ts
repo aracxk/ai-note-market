@@ -110,6 +110,16 @@ describe("Note (記事 集約ルート)", () => {
 			expect(rePublishResult.success).toBe(true);
 			expect(note.status).toBe(NOTE_STATUS.PUBLISHED);
 		});
+
+		it("すでに販売停止済みの状態で再度 archive しても冪等に成功すること", () => {
+			const { note } = createValidTestNote();
+			note.archive();
+
+			const secondResult = note.archive();
+
+			expect(secondResult.success).toBe(true);
+			expect(note.status).toBe(NOTE_STATUS.ARCHIVED);
+		});
 	});
 
 	describe("③ 記事内容の改定メソッド", () => {
