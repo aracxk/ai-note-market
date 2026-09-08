@@ -36,7 +36,7 @@ jobs:
         run: npm run coverage
 
       - name: Report Coverage to PR
-        uses: davelosert/vitest-coverage-action@v2
+        uses: davelosert/vitest-coverage-report-action@v2
         if: github.event_name == 'pull_request' # PRの時だけ実行
         with:
           name: "Vitest Coverage"
