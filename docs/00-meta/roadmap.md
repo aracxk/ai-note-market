@@ -22,9 +22,10 @@ flowchart TD
 
 ### Phase 0: 環境整備 & AI制御 (完了)
 - [x] ワークスペース準備 (`ai-note-market`)
-- [x] AI行動制御ルール (`agent.md`)
+- [x] Antigravity AI行動制御ルール (`.agents/rules/`)
 - [x] ドキュメント階層構造 (`docs/`)
-- [x] TypeScript / Vitest の基本環境セットアップ
+- [x] TypeScript / Vitest / Biome / Husky の基本環境セットアップ
+- [x] GitHub Actions (CI) と Vercel (CD) の自動化パイプライン構築
 - [x] Git管理・GitHub連携・PRテンプレート整備・レビューSkill配備
 
 ### Phase 1: 【ステップ1】DDD（中身を作る） (完了)
