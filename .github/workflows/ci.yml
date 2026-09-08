@@ -38,7 +38,7 @@ jobs:
 
       - name: Report Coverage to PR
         uses: davelosert/vitest-coverage-report-action@v2
-        if: github.event_name == 'pull_request' # PRの時だけ実行
+        if: always() && github.event_name == 'pull_request' # エラー時も必ずPRの時だけ実行
         with:
           name: "テスト網羅率 (カバレッジ) レポート"
           json-summary-path: "coverage/coverage-summary.json"
