@@ -11,6 +11,8 @@ on:
 jobs:
   test-and-typecheck:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write # PRにコメントを書き込むための権限
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -30,5 +32,12 @@ jobs:
       - name: Run Typecheck
         run: npm run typecheck
 
-      - name: Run Tests
-        run: npm run test
+      - name: Run Tests with Coverage
+        run: npm run coverage
+
+      - name: Report Coverage to PR
+        uses: davelosert/vitest-coverage-action@v2
+        if: github.event_name == 'pull_request' # PRの時だけ実行
+        with:
+          name: "Vitest Coverage"
+          json-summary-path: "coverage/coverage-summary.json"
