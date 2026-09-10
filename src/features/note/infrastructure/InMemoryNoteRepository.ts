@@ -39,6 +39,13 @@ export class InMemoryNoteRepository implements INoteRepository {
 	}
 
 	/**
+	 * テスト・開発用にすべての記事を取得する
+	 */
+	public getAll(): Note[] {
+		return Array.from(this.notes.values());
+	}
+
+	/**
 	 * テスト間のデータ分離用のヘルパーメソッド（全件クリア）
 	 */
 	public clear(): void {
