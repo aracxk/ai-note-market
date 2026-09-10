@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
+import type { Result } from "@/shared/core/Result";
 import { UserId } from "@/shared/domain/UserId";
 import { Category } from "../../domain/Category";
 import { Note } from "../../domain/Note";
@@ -8,6 +9,13 @@ import { NoteTitle } from "../../domain/NoteTitle";
 import { Price } from "../../domain/Price";
 import { InMemoryNoteRepository } from "../InMemoryNoteRepository";
 import { InMemoryNoteSummaryQueryService } from "../InMemoryNoteSummaryQueryService";
+
+function unwrap<T, E>(result: Result<T, E>): T {
+	if (!result.success) {
+		throw new Error("Result is error: " + JSON.stringify(result.error));
+	}
+	return result.value;
+}
 
 describe("InMemoryNoteSummaryQueryService", () => {
 	let repository: InMemoryNoteRepository;
@@ -19,18 +27,16 @@ describe("InMemoryNoteSummaryQueryService", () => {
 	});
 
 	it("公開中（PUBLISHED）の記事のみを取得し、新しい順にソートすること", async () => {
-		const title = NoteTitle.create("Draft Note").value as NoteTitle;
-		const content = NoteContent.createFree("Hello World Free Content")
-			.value as NoteContent;
-		const category = Category.create("ENGINEERING", "RULES_CONFIG")
-			.value as Category;
-		const price0 = Price.create(0).value as Price;
-		const price100 = Price.create(100).value as Price;
+		const title = unwrap(NoteTitle.create("Draft Note"));
+		const content = unwrap(NoteContent.createFree("Hello World Free Content"));
+		const category = unwrap(Category.create("ENGINEERING", "RULES_CONFIG"));
+		const price0 = Price.free();
+		const price100 = unwrap(Price.create(100));
 
 		// 1. DRAFTの記事
 		const draftNote = Note.createDraft({
-			id: new NoteId("note-1"),
-			authorId: new UserId("author-1"),
+			id: unwrap(NoteId.create("note-1")),
+			authorId: unwrap(UserId.create("author-1")),
 			title,
 			content,
 			price: price0,
@@ -40,8 +46,8 @@ describe("InMemoryNoteSummaryQueryService", () => {
 
 		// 2. PUBLISHEDの記事 (古い)
 		const publishedOld = Note.createDraft({
-			id: new NoteId("note-2"),
-			authorId: new UserId("author-1"),
+			id: unwrap(NoteId.create("note-2")),
+			authorId: unwrap(UserId.create("author-1")),
 			title,
 			content,
 			price: price100,
@@ -52,8 +58,8 @@ describe("InMemoryNoteSummaryQueryService", () => {
 
 		// 3. PUBLISHEDの記事 (新しい)
 		const publishedNew = Note.createDraft({
-			id: new NoteId("note-3"),
-			authorId: new UserId("author-2"),
+			id: unwrap(NoteId.create("note-3")),
+			authorId: unwrap(UserId.create("author-2")),
 			title,
 			content,
 			price: price0,
@@ -64,8 +70,8 @@ describe("InMemoryNoteSummaryQueryService", () => {
 
 		// 4. ARCHIVEDの記事
 		const archivedNote = Note.createDraft({
-			id: new NoteId("note-4"),
-			authorId: new UserId("author-1"),
+			id: unwrap(NoteId.create("note-4")),
+			authorId: unwrap(UserId.create("author-1")),
 			title,
 			content,
 			price: price0,
@@ -82,5 +88,33 @@ describe("InMemoryNoteSummaryQueryService", () => {
 
 		expect(result[0].noteId).toBe("note-3");
 		expect(result[1].noteId).toBe("note-2");
+	});
+
+	it("ページネーション（limit / offset）が正しく適用されること", async () => {
+		const title = unwrap(NoteTitle.create("Page Note"));
+		const content = unwrap(NoteContent.createFree("Hello World Free Content"));
+		const category = unwrap(Category.create("ENGINEERING", "RULES_CONFIG"));
+		const price0 = Price.free();
+
+		// 3件のPUBLISHED記事を作成（1日ずつずらす）
+		for (let i = 1; i <= 3; i++) {
+			const note = Note.createDraft({
+				id: unwrap(NoteId.create(`page-note-${i}`)),
+				authorId: unwrap(UserId.create("author-1")),
+				title,
+				content,
+				price: price0,
+				category,
+			});
+			note.publish(new Date(`2026-01-0${i}T10:00:00Z`));
+			await repository.save(note);
+		}
+
+		// 最新順なので、page-note-3, page-note-2, page-note-1 の順になる
+		// offset: 1, limit: 1 を指定すると、2番目の page-note-2 のみ取得されるはず
+		const result = await queryService.findPublishedNotes(1, 1);
+
+		expect(result).toHaveLength(1);
+		expect(result[0].noteId).toBe("page-note-2");
 	});
 });
