@@ -15,7 +15,7 @@ import { InMemoryPurchaseRepository } from "../InMemoryPurchaseRepository";
 
 function unwrap<T, E>(result: Result<T, E>): T {
 	if (!result.success) {
-		throw new Error("Result is error: " + JSON.stringify(result.error));
+		throw new Error(`Result is error: ${JSON.stringify(result.error)}`);
 	}
 	return result.value;
 }
