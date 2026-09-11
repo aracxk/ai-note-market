@@ -1,6 +1,4 @@
 import { Result } from "@/shared/core/Result";
-import { DomainError } from "@/shared/domain/DomainError";
-import { DOMAIN_ERROR_CODES } from "@/shared/domain/DomainErrorCode";
 import { Entity } from "@/shared/domain/Entity";
 import type { UserId } from "@/shared/domain/UserId";
 import type { Category } from "./Category";

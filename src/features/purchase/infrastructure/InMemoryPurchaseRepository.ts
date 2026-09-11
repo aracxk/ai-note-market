@@ -52,6 +52,13 @@ export class InMemoryPurchaseRepository implements IPurchaseRepository {
 	}
 
 	/**
+	 * テスト・開発用にすべての購入履歴を取得する
+	 */
+	public getAll(): Purchase[] {
+		return Array.from(this.purchases.values());
+	}
+
+	/**
 	 * テスト間のデータ分離用のヘルパーメソッド（全件クリア）
 	 */
 	public clear(): void {
