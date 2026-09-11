@@ -64,11 +64,11 @@ flowchart TD
   - [x] ADR 0007 起票（`schemas/` 独立配置と境界防御方針）
 - **テスト**: スキーマ検証および異常系門前払いの単体テスト (全18件 All Green)
 
-### Phase 4: CQRS による読み取り専用クエリモデルの構築
+### Phase 4: CQRS による読み取り専用クエリモデルの構築 (完了)
 - **ゴール**: 疎結合にした集約同士の一覧表示（購入履歴、著者別記事一覧等）を、集約を介さず高速に結合取得するクエリサービスを構築する。
 - **実装内容**:
-  - `PurchaseHistoryQueryService`（マイページ用購入一覧 DTO 取得）
-  - `NoteSummaryQueryService`（一覧画面用カード DTO 取得）
+  - [x] `PurchaseHistoryQueryService`（マイページ用購入一覧 DTO 取得）
+  - [x] `NoteSummaryQueryService`（一覧画面用カード DTO 取得）
 
 ### Phase 5: Next.js App Router UI 実装 & Vercel デプロイ
 - **ゴール**: Clean Architecture の最外層（Presentation層）として Next.js を接続し、Vercel 上で動作確認を行う（ADR 0002 参照）。
