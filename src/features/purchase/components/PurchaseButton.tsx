@@ -29,6 +29,7 @@ export function PurchaseButton({
 }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isPending, setIsPending] = useState(false);
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
 	const form = useForm({
 		resolver: zodResolver(schema),
@@ -37,10 +38,18 @@ export function PurchaseButton({
 
 	async function onSubmit(data: z.infer<typeof schema>) {
 		setIsPending(true);
+		setErrorMessage(null);
+
 		try {
-			await purchaseNoteAction(data.noteId);
+			// 例外をキャッチするのではなく、戻り値でエラーを判定する
+			const result = await purchaseNoteAction(data.noteId);
+			if (!result.success) {
+				setErrorMessage(result.error || "購入に失敗しました。");
+				return;
+			}
 			setIsOpen(false);
 		} catch (error) {
+			setErrorMessage("予期せぬ通信エラーが発生しました。");
 			console.error(error);
 		} finally {
 			setIsPending(false);
@@ -65,6 +74,11 @@ export function PurchaseButton({
 				</DialogHeader>
 
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+					{errorMessage && (
+						<div className="text-sm font-medium text-destructive bg-destructive/10 p-3 rounded-md">
+							{errorMessage}
+						</div>
+					)}
 					<DialogFooter className="mt-4">
 						<Button
 							type="button"

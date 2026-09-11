@@ -9,11 +9,12 @@ flowchart TD
     Phase2["Phase 2: Feature-based Clean Architecture - UseCase / Repository / DIP"]
     Phase3["Phase 3: Zod & スキーマ駆動 - 境界防御 / Input DTO / Result型"]
     Phase4["Phase 4: CQRS & 読み取りモデル - 一覧・検索の最適化とデータ結合"]
-    Phase5["Phase 5: Next.js UI連携 - Server Actions & クリーンUI"]
+    Phase5["Phase 5: Next.js UI連携 - Server Actions & クリーンUI (完了)"]
+    Phase5_5["Phase 5.5: 最高峰の B2C UI/UX 刷新 & SEO/GA 解析基盤"]
     Phase6["Phase 6: Playwright E2Eテスト & CI自動化"]
     Phase7["Phase 7: Go言語での再実装比較 (発展)"]
 
-    Phase0 --> Phase1 --> Phase2 --> Phase3 --> Phase4 --> Phase5 --> Phase6 --> Phase7
+    Phase0 --> Phase1 --> Phase2 --> Phase3 --> Phase4 --> Phase5 --> Phase5_5 --> Phase6 --> Phase7
 ```
 
 ---
@@ -77,6 +78,15 @@ flowchart TD
   - 購入ボタンと Server Actions による UseCase 呼び出し
   - 閲覧権限（購入済みか否か）による本文表示制御
   - Vercel への初回デプロイとプレビュー環境の確認
+
+### Phase 5.5: 最高峰の B2C UI/UX 刷新 & SEO/GA 解析基盤
+- **ゴール**: 既存のメディアプラットフォーム（note等）を凌駕する極上の読書体験（UI/UX）と、商用レベルの SEO 対策・アクセス解析（Google Analytics）基盤を構築する。
+- **実装内容**:
+  - 【UI/UX】ダッシュボード型の画面枠を全廃し、B2C特化の「ミニマルなトップナビゲーション ＋ 余白を生かしたシングルカラム」へ刷新。
+  - 【UI/UX】読者の没入感を高める緻密なタイポグラフィ（フォントサイズ、行間、文字色、コントラスト）の再設計。
+  - 【SEO】Next.js Metadata API を活用した動的タイトル・OGP画像生成、および `sitemap.xml` の自動生成。
+  - 【SEO】検索エンジン向けの JSON-LD (Article スキーマ) 構造化データの埋め込み。
+  - 【Analytics】Google Analytics (GA4) の Next.js (App Router) への最適化された組み込みとイベント計測。
 
 ### Phase 6: Playwright による E2E テスト & CI ワークフロー
 - **ゴール**: ユーザー視点でのシナリオテスト（執筆 → 公開 → 別ユーザーで購入 → 閲覧可能になる）を自動化し、GitHub Actions で継続的テスト環境を構築する。
