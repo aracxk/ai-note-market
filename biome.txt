@@ -1,0 +1,44 @@
+src/features/note/domain/Note.ts:2:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━━━
+
+  ! This import is unused.
+  
+    1 │ import { Result } from "@/shared/core/Result";
+  > 2 │ import { DomainError } from "@/shared/domain/DomainError";
+      │        ^^^^^^^^^^^^^^^
+    3 │ import { DOMAIN_ERROR_CODES } from "@/shared/domain/DomainErrorCode";
+    4 │ import { Entity } from "@/shared/domain/Entity";
+  
+  i Unused imports might be the result of an incomplete refactoring.
+  
+  i Unsafe fix: Remove the unused imports.
+  
+      1   1 │   import { Result } from "@/shared/core/Result";
+      2     │ - import·{·DomainError·}·from·"@/shared/domain/DomainError";
+      3   2 │   import { DOMAIN_ERROR_CODES } from "@/shared/domain/DomainErrorCode";
+      4   3 │   import { Entity } from "@/shared/domain/Entity";
+  
+
+src/features/note/domain/Note.ts:3:8 lint/correctness/noUnusedImports  FIXABLE  ━━━━━━━━━━━━━━━━━━━━
+
+  ! This import is unused.
+  
+    1 │ import { Result } from "@/shared/core/Result";
+    2 │ import { DomainError } from "@/shared/domain/DomainError";
+  > 3 │ import { DOMAIN_ERROR_CODES } from "@/shared/domain/DomainErrorCode";
+      │        ^^^^^^^^^^^^^^^^^^^^^^
+    4 │ import { Entity } from "@/shared/domain/Entity";
+    5 │ import type { UserId } from "@/shared/domain/UserId";
+  
+  i Unused imports might be the result of an incomplete refactoring.
+  
+  i Unsafe fix: Remove the unused imports.
+  
+      1   1 │   import { Result } from "@/shared/core/Result";
+      2   2 │   import { DomainError } from "@/shared/domain/DomainError";
+      3     │ - import·{·DOMAIN_ERROR_CODES·}·from·"@/shared/domain/DomainErrorCode";
+      4   3 │   import { Entity } from "@/shared/domain/Entity";
+      5   4 │   import type { UserId } from "@/shared/domain/UserId";
+  
+
+Checked 58 files in 33ms. No fixes applied.
+Found 2 warnings.

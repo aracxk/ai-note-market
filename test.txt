@@ -1,0 +1,34 @@
+
+> ai-note-market@0.1.0 test
+> vitest run
+
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+ RUN  v2.1.9 /Users/iori/workspace/ai-note-market
+
+ ✓ src/features/note/domain/__tests__/Category.test.ts (10 tests) 3ms
+ ✓ src/features/note/domain/__tests__/NoteContent.test.ts (17 tests) 3ms
+ ✓ src/features/note/domain/__tests__/Note.test.ts (16 tests) 6ms
+ ✓ src/features/purchase/domain/__tests__/Purchase.test.ts (6 tests) 3ms
+ ✓ src/features/purchase/infrastructure/__tests__/InMemoryPurchaseRepository.test.ts (5 tests) 3ms
+ ✓ src/features/purchase/infrastructure/__tests__/InMemoryPurchaseHistoryQueryService.test.ts (2 tests) 7ms
+ ✓ src/features/purchase/usecases/__tests__/PurchaseNoteUseCase.test.ts (7 tests) 18ms
+ ✓ src/features/note/domain/__tests__/Price.test.ts (11 tests) 9ms
+ ✓ src/features/note/infrastructure/__tests__/InMemoryNoteSummaryQueryService.test.ts (2 tests) 2ms
+ ✓ src/features/note/domain/__tests__/NoteTitle.test.ts (9 tests) 4ms
+ ✓ src/features/note/schemas/__tests__/createNoteSchema.test.ts (7 tests) 6ms
+ ✓ src/features/note/infrastructure/__tests__/InMemoryNoteRepository.test.ts (3 tests) 3ms
+ ✓ src/features/note/usecases/__tests__/PublishNoteUseCase.test.ts (3 tests) 2ms
+ ✓ src/features/purchase/schemas/__tests__/purchaseNoteSchema.test.ts (4 tests) 6ms
+ ✓ src/shared/schemas/__tests__/validateSchema.test.ts (3 tests) 18ms
+ ✓ src/features/purchase/domain/__tests__/PurchaseId.test.ts (5 tests) 6ms
+ ✓ src/features/note/schemas/__tests__/publishNoteSchema.test.ts (4 tests) 7ms
+ ✓ src/shared/domain/__tests__/UserId.test.ts (5 tests) 3ms
+ ✓ src/features/note/domain/__tests__/NoteId.test.ts (5 tests) 4ms
+ ✓ src/shared/domain/__tests__/Entity.test.ts (4 tests) 2ms
+
+ Test Files  20 passed (20)
+      Tests  128 passed (128)
+   Start at  09:08:06
+   Duration  898ms (transform 445ms, setup 0ms, collect 1.17s, tests 115ms, environment 4ms, prepare 1.17s)
+
