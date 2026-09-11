@@ -11,8 +11,8 @@ Phase 5 にて、堅牢に構築されたDDD（ドメイン層）およびCQRS�
 ブラックボックスなnpmパッケージへの依存を避け、「所有するUI」の哲学を持つライブラリ群を採用する。ただし、これらが1つのフォルダ内で衝突・スパゲッティ化するのを防ぐため、**提供元ごとにディレクトリを完全に分離（名前空間化）**する。
 
 - `src/components/ui/` : 公式 `shadcn/ui` の標準コンポーネント（Button, Dialog 等。CLIが自動配置する場所）
-- `src/components/magicui/` : `Magic UI` のリッチアニメーションコンポーネント
-- `src/components/aceternity/` : `Aceternity UI` の特殊エフェクトコンポーネント
+
+
 
 ※これらのディレクトリ内のファイルはすべて「純粋なUI部品」であり、ドメイン知識（`src/features/`）をインポートしてはならない。
 
