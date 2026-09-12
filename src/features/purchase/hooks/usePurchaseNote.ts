@@ -1,15 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { purchaseNoteAction } from "@/app/actions/purchaseNoteAction";
-
-// バリデーションスキーマ
-const purchaseSchema = z.object({
-	noteId: z.string().min(1),
-});
-
-export type PurchaseFormData = z.infer<typeof purchaseSchema>;
+import {
+	type PurchaseFormData,
+	purchaseFormSchema,
+} from "../schemas/purchaseFormSchema";
 
 export function usePurchaseNote(noteId: string) {
 	const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +13,7 @@ export function usePurchaseNote(noteId: string) {
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
 	const form = useForm<PurchaseFormData>({
-		resolver: zodResolver(purchaseSchema),
+		resolver: zodResolver(purchaseFormSchema),
 		defaultValues: { noteId },
 	});
 
@@ -31,7 +27,6 @@ export function usePurchaseNote(noteId: string) {
 				setErrorMessage(result.error || "購入に失敗しました。");
 				return;
 			}
-			// 成功時
 			setIsOpen(false);
 		} catch (error) {
 			setErrorMessage("予期せぬ通信エラーが発生しました。");
