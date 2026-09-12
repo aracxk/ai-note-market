@@ -1,10 +1,5 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { purchaseNoteAction } from "@/app/actions/purchaseNoteAction";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -15,10 +10,7 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
-
-const schema = z.object({
-	noteId: z.string().min(1),
-});
+import { usePurchaseNote } from "../hooks/usePurchaseNote";
 
 export function PurchaseButton({
 	noteId,
@@ -27,34 +19,9 @@ export function PurchaseButton({
 	noteId: string;
 	price: number;
 }) {
-	const [isOpen, setIsOpen] = useState(false);
-	const [isPending, setIsPending] = useState(false);
-	const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-	const form = useForm({
-		resolver: zodResolver(schema),
-		defaultValues: { noteId },
-	});
-
-	async function onSubmit(data: z.infer<typeof schema>) {
-		setIsPending(true);
-		setErrorMessage(null);
-
-		try {
-			// 例外をキャッチするのではなく、戻り値でエラーを判定する
-			const result = await purchaseNoteAction(data.noteId);
-			if (!result.success) {
-				setErrorMessage(result.error || "購入に失敗しました。");
-				return;
-			}
-			setIsOpen(false);
-		} catch (error) {
-			setErrorMessage("予期せぬ通信エラーが発生しました。");
-			console.error(error);
-		} finally {
-			setIsPending(false);
-		}
-	}
+	// ロジックを完全にHooksへ委譲（Custom Hook パターン）
+	const { form, isOpen, setIsOpen, isPending, errorMessage, onSubmit } =
+		usePurchaseNote(noteId);
 
 	return (
 		<Dialog open={isOpen} onOpenChange={setIsOpen}>
