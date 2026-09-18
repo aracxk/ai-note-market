@@ -1,22 +1,13 @@
 import { notFound } from "next/navigation";
 import { NoteDetail } from "@/features/note/components/NoteDetail";
+import { registry } from "@/lib/registry";
 
-// 実際にはリポジトリやQueryServiceを呼び出します
-async function getNoteData(id: string) {
-	if (id === "not-found") return null;
-	return {
-		id,
-		title: "AIを活用した次世代フロントエンドアーキテクチャ",
-		authorId: "iorirac",
-		categoryId: "tech",
-		price: 500,
-		publishedAt: new Date().toISOString(),
-	};
-}
-
-// Next.js Metadata API: SEO向けの動的メタデータ生成
 export async function generateMetadata({ params }: { params: { id: string } }) {
-	const note = await getNoteData(params.id);
+	const currentUserId = "test-buyer";
+	const note = await registry.noteDetailQueryService.getNoteDetail(
+		params.id,
+		currentUserId,
+	);
 	if (!note) return { title: "Not Found" };
 
 	return {
@@ -37,16 +28,23 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
 }
 
 export default async function NotePage({ params }: { params: { id: string } }) {
-	const note = await getNoteData(params.id);
+	const currentUserId = "test-buyer";
+
+	// 詳細データの取得（購入済みなら有料エリアを含む）
+	const note = await registry.noteDetailQueryService.getNoteDetail(
+		params.id,
+		currentUserId,
+	);
 	if (!note) {
 		notFound();
 	}
 
-	// ユーザーが購入済みかどうかの確認をシミュレート
-	// デモのためfalseを渡しています。実際には購入後にtrueへ切り替わります。
-	const isPurchased = false;
+	// UI表示用フラグ
+	const isPurchased = await registry.noteDetailQueryService.isPurchased(
+		note.id,
+		currentUserId,
+	);
 
-	// Google検索向け JSON-LD (構造化データ: Article)
 	const jsonLd = {
 		"@context": "https://schema.org",
 		"@type": "Article",
@@ -66,7 +64,6 @@ export default async function NotePage({ params }: { params: { id: string } }) {
 
 	return (
 		<>
-			{/* JSON-LD の注入 */}
 			<script
 				type="application/ld+json"
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD requires dangerouslySetInnerHTML
