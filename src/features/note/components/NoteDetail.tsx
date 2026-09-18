@@ -1,3 +1,4 @@
+import { Lock } from "lucide-react";
 import { PurchaseButton } from "@/features/purchase/components/PurchaseButton";
 
 export function NoteDetail({
@@ -47,7 +48,7 @@ export function NoteDetail({
 
 						<div className="relative z-20 -mt-10 mx-auto max-w-md bg-white border border-gray-200 shadow-xl rounded-2xl p-8 text-center space-y-6">
 							<div className="w-12 h-12 bg-gray-900 text-white rounded-full flex items-center justify-center mx-auto mb-4">
-								🔒
+								<Lock className="w-6 h-6" />
 							</div>
 							<div>
 								<h3 className="text-xl font-bold text-gray-900 mb-2">
