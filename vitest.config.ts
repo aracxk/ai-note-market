@@ -9,7 +9,21 @@ export default defineConfig({
 		coverage: {
 			provider: "v8",
 			reporter: ["text", "json-summary", "json", "html"],
-			exclude: ["src/app/**", "**/*.test.ts", "**/__tests__/**", ".next/**"],
+			exclude: [
+				"src/app/**",
+				"src/components/**", // UIコンポーネントはPlaywrightの管轄
+				"src/features/**/components/**", // Feature層のUIコンポーネント
+				"src/features/**/actions/**", // Server Actions（E2Eで担保）
+				"src/features/**/hooks/**", // React Hooks（E2Eで担保）
+				"src/lib/**", // registryやutilsなど（インフラ寄り）
+				"tests/e2e/**", // Playwrightテストスクリプト自身
+				"playwright.config.ts",
+				"next.config.mjs",
+				"postcss.config.mjs",
+				"**/*.test.ts",
+				"**/__tests__/**",
+				".next/**",
+			],
 			thresholds: {
 				"src/features/**/domain/**": {
 					statements: 100,
