@@ -44,6 +44,11 @@ describe("InMemoryNoteDetailQueryService", () => {
 	});
 
 	describe("getNoteDetail", () => {
+		it("無効なフォーマットの記事IDを指定した場合はnullを返す", async () => {
+			const result = await queryService.getNoteDetail(" ", "any-user");
+			expect(result).toBeNull();
+		});
+
 		it("存在しない記事IDを指定した場合はnullを返す", async () => {
 			const result = await queryService.getNoteDetail("not-exist", "any-user");
 			expect(result).toBeNull();

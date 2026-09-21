@@ -69,6 +69,30 @@ describe("PublishNoteUseCase (記事公開ユースケース)", () => {
 	});
 
 	describe("② 異常系", () => {
+		it("無効なnoteIdの場合はエラーを返すこと", async () => {
+			const result = await useCase.execute({
+				noteId: " ",
+				authorId: "author-1",
+			});
+			expect(result.success).toBe(false);
+		});
+		it("無効なauthorIdの場合はエラーを返すこと", async () => {
+			const result = await useCase.execute({ noteId: "note-1", authorId: " " });
+			expect(result.success).toBe(false);
+		});
+
+		it("無効なnoteIdの場合はエラーを返すこと", async () => {
+			const result = await useCase.execute({
+				noteId: " ",
+				authorId: "author-1",
+			});
+			expect(result.success).toBe(false);
+		});
+		it("無効なauthorIdの場合はエラーを返すこと", async () => {
+			const result = await useCase.execute({ noteId: "note-1", authorId: " " });
+			expect(result.success).toBe(false);
+		});
+
 		it("存在しない記事IDを指定した場合は NoteNotFoundError が返ること", async () => {
 			const authorId = UserId.generate();
 

@@ -40,10 +40,10 @@ export default defineConfig({
 					lines: 100,
 				},
 				"src/features/**/usecases/**": {
-					statements: 90,
-					branches: 85,
+					statements: 100,
+					branches: 100,
 					functions: 100,
-					lines: 90,
+					lines: 100,
 				},
 				"src/features/**/queries/**": {
 					statements: 100,
@@ -52,10 +52,10 @@ export default defineConfig({
 					lines: 100,
 				},
 				"src/features/**/infrastructure/**": {
-					statements: 90,
-					branches: 90,
-					functions: 90,
-					lines: 90,
+					statements: 100,
+					branches: 100,
+					functions: 100,
+					lines: 100,
 				},
 			},
 		},
