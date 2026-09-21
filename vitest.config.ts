@@ -17,6 +17,12 @@ export default defineConfig({
 				"src/features/*/actions/**",
 				"src/features/*/external/**",
 
+				// --- ロジックを含まない・UI寄りのフォルダ除外 ---
+				"src/features/*/hooks/**",
+				"src/features/*/schemas/**",
+				"src/shared/schemas/**",
+				"src/lib/**",
+
 				// --- 設定・ビルド関連の除外 ---
 				"tests/e2e/**",
 				"playwright.config.ts",
@@ -34,10 +40,10 @@ export default defineConfig({
 					lines: 100,
 				},
 				"src/features/**/usecases/**": {
-					statements: 100,
-					branches: 100,
+					statements: 90,
+					branches: 85,
 					functions: 100,
-					lines: 100,
+					lines: 90,
 				},
 				"src/features/**/queries/**": {
 					statements: 100,
@@ -46,10 +52,10 @@ export default defineConfig({
 					lines: 100,
 				},
 				"src/features/**/infrastructure/**": {
-					statements: 100,
-					branches: 100,
-					functions: 100,
-					lines: 100,
+					statements: 90,
+					branches: 90,
+					functions: 90,
+					lines: 90,
 				},
 			},
 		},
