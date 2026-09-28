@@ -94,10 +94,11 @@ flowchart TD
   - 主要ユースケースの E2E シナリオテスト実装
   - `.github/workflows/ci.yml` による push/PR 時の自動単体テスト・型チェック・E2E実行ワークフロー構築
 
-### Phase 7 (発展): Go言語によるバックエンド分離と GraphQL 基盤構築
-- **ゴール**: 現在のNext.jsフルスタック構成からドメインロジックを切り離し、将来のスマホアプリ（React Native等）マルチクライアント展開に耐えうる独立したAPI基盤を構築する。
+### Phase 7 (発展): NestJSによるバックエンド分離とモノレポ（型の共有）基盤構築
+- **ゴール**: 現在のNext.jsフルスタック構成からドメイン資産（ピュアTS）を無駄なく切り離し、スマホアプリ等の展開に耐えうる独立したAPI基盤（NestJS）を構築する。
 - **実装内容**:
-  - 【Backend】Go言語によるドメイン駆動設計（DDD）の再実装。
-  - 【API】GraphQLサーバーの構築（スキーマ駆動開発による型安全な通信）。
-  - 【Frontend】Next.js から Server Actions を廃止し、Apollo等を用いたピュアな GraphQL クライアントへと作り直す（Headless化）。
-  - 言語特性（TypeScriptのクラス指向 vs Goの構造体・インターフェース指向）によるアーキテクチャ表現の違いを比較・学習。
+  - 【Infrastructure】Turborepo等を用いた TypeScript モノレポ環境の構築。
+  - 【Backend】NestJS プロジェクトを作成し、既存のドメイン・ユースケース・インフラ層を完全移植。
+  - 【API】REST API（またはGraphQL）エンドポイントの構築。
+  - 【Frontend】Next.js から Server Actions を廃止し、ピュアなフロントエンドクライアントへと作り直す（Headless化）。
+  - （※Go言語でのアーキテクチャ構築は、本プロジェクト完了後、全く新しい別プロジェクトにて実施する）

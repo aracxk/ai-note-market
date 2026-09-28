@@ -20,39 +20,38 @@ Server Actions は Next.js Web専用の隠蔽された通信プロトコルで�
 
 本格的に「Web（Next.js）」と「Mobile（React Native 等）」の両方を展開する場合、ロジックをバックエンド側に完全に切り出し、フロントエンドは「ただのUI」に徹するアーキテクチャが最もスケーラブル（拡張性が高い）となる。
 
-### 最適解: 独立したAPIサーバー（Go）＋ GraphQL
+### 最適解: 独立したAPIサーバー（NestJS）＋ モノレポ構成
+
+本プロジェクト（ai-note-market）においては、これまで構築した強固な TypeScript ドメイン資産を無駄にせず最速でAPI分離を果たすため、**「NestJS によるバックエンド分離 ＋ Turborepo等によるモノレポ構成」** を採用する。
+（※圧倒的なパフォーマンスが要求されるGo言語での構築は、既存コードの翻訳ではなく、全く新しい別プロジェクトにてゼロから設計・構築することとする）
 
 ```mermaid
 flowchart TD
-    subgraph Clients["Frontend (UI & State)"]
-        Web["Next.js (Web Browser)"]
-        Mobile["React Native / Expo (iOS & Android)"]
-    end
+    subgraph Monorepo["TypeScript Monorepo (Turborepo)"]
+        subgraph Packages["Shared Packages"]
+            Domain["Domain / UseCases (Pure TS)"]
+            Schemas["Zod Schemas / Types"]
+        end
 
-    subgraph API_Layer["API Gateway"]
-        GraphQL["GraphQL Server"]
-    end
+        subgraph Apps["Applications"]
+            Web["Next.js (Web Frontend)"]
+            Mobile["React Native (Future)"]
+            API["NestJS (Backend API / GraphQL)"]
+        end
 
-    subgraph Backend["Backend (Domain & Infrastructure)"]
-        GoServer["Go (API Server)"]
-        DB[(Database)]
+        Web -->|HTTP / GraphQL| API
+        Mobile -->|HTTP / GraphQL| API
+        API -.->|Imports| Domain
+        API -.->|Imports| Schemas
+        Web -.->|Imports| Schemas
     end
-
-    Web -->|GraphQL Query/Mutation| GraphQL
-    Mobile -->|GraphQL Query/Mutation| GraphQL
-    GraphQL --- GoServer
-    GoServer --- DB
 ```
 
-#### なぜこの構成が最適なのか？
-1. **フロントエンドの完全な独立 (Headless 化)**
-   - Next.js も React Native も、バックエンドの複雑なドメインルールを知る必要がなくなる。APIからデータを貰って描画するだけの「純粋なUI」に専念できる。
-2. **GraphQL によるクライアント主導のデータ取得**
-   - スマホ画面はWeb画面より狭いため、「PC版と同じAPIを叩くとデータ量が多すぎて重い（オーバーフェッチ）」という問題が起きやすい。GraphQLを使えば、スマホアプリは**「スマホ画面に必要なデータだけ」**をピンポイントで要求でき、通信量とパフォーマンスを最適化できる。
-3. **Go 言語による堅牢性と並行処理**
-   - バックエンドが独立することで、将来的なプッシュ通知の大量配信、リアルタイムチャットのソケット通信など、Node.js が苦手な処理を Go の得意な `goroutine` に任せることができる。
+#### なぜこの構成が本プロジェクトの最適解なのか？
+1. **既存ドメイン資産の完全流用**: Phase 1〜4 で作成したピュアTSのコード群や85件以上のテストコードを1行も無駄にせず、そのままバックエンドに移行できる。
+2. **型の完全共有 (End-to-End Type Safety)**: モノレポにすることで、バックエンド（NestJS）のAPIの型やZodスキーマをフロントエンド（Next.js）と直接共有でき、変更時のコンパイルエラー検知が完璧になる。
+3. **フロントエンドの完全な独立 (Headless 化)**: Next.js はバックエンドの複雑なドメインルールを知る必要がなくなり、純粋なUIに専念できる。
 
 ## 3. 今後の展開（Phase 7 の方針）
 
-上記のマルチクライアント構想を検証するため、次フェーズ（Phase 7）では現在の TypeScript (Next.js) 内に同居しているドメインロジックを切り離し、**「Go言語によるバックエンド再実装 ＋ GraphQL連携」** を行う。
-これにより、将来 React Native アプリを追加する際に、一切バックエンドを変更せずに接続できる理想的なAPI基盤が完成する。
+次フェーズ（Phase 7）では、現在の Next.js フルスタック構成からドメインロジックを切り離し、**「NestJSによるバックエンドAPI化 ＋ モノレポ（型の共有）」** を行う。
