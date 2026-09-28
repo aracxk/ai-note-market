@@ -10,13 +10,21 @@ export default defineConfig({
 			provider: "v8",
 			reporter: ["text", "json-summary", "json", "html"],
 			exclude: [
+				// --- ❌ テスト除外フォルダ（Playwrightで担保） ---
 				"src/app/**",
-				"src/components/**", // UIコンポーネントはPlaywrightの管轄
-				"src/features/**/components/**", // Feature層のUIコンポーネント
-				"src/features/**/actions/**", // Server Actions（E2Eで担保）
-				"src/features/**/hooks/**", // React Hooks（E2Eで担保）
-				"src/lib/**", // registryやutilsなど（インフラ寄り）
-				"tests/e2e/**", // Playwrightテストスクリプト自身
+				"src/components/**",
+				"src/features/*/components/**",
+				"src/features/*/actions/**",
+				"src/features/*/external/**",
+
+				// --- ロジックを含まない・UI寄りのフォルダ除外 ---
+				"src/features/*/hooks/**",
+				"src/features/*/schemas/**",
+				"src/shared/schemas/**",
+				"src/lib/**",
+
+				// --- 設定・ビルド関連の除外 ---
+				"tests/e2e/**",
 				"playwright.config.ts",
 				"next.config.mjs",
 				"postcss.config.mjs",
@@ -32,10 +40,22 @@ export default defineConfig({
 					lines: 100,
 				},
 				"src/features/**/usecases/**": {
-					statements: 80,
-					branches: 80,
-					functions: 90,
-					lines: 80,
+					statements: 100,
+					branches: 100,
+					functions: 100,
+					lines: 100,
+				},
+				"src/features/**/queries/**": {
+					statements: 100,
+					branches: 100,
+					functions: 100,
+					lines: 100,
+				},
+				"src/features/**/infrastructure/**": {
+					statements: 100,
+					branches: 100,
+					functions: 100,
+					lines: 100,
 				},
 			},
 		},

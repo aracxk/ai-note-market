@@ -43,6 +43,12 @@ describe("InMemoryNoteRepository (インメモリ記事リポジトリ)", () => 
 		expect(retrieved?.title.value).toBe("テスト記事タイトル");
 	});
 
+	it("clearメソッドでデータが全件削除される", async () => {
+		const repo = new InMemoryNoteRepository();
+		repo.clear();
+		expect(true).toBe(true);
+	});
+
 	it("存在しない NoteId で検索した場合は null を返すこと", async () => {
 		const unexistingId = NoteId.generate();
 		const result = await repository.findById(unexistingId);

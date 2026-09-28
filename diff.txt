@@ -1,0 +1,520 @@
+diff --git a/docs/01-architecture/05-testing-strategy.md b/docs/01-architecture/05-testing-strategy.md
+index ac96a7b..5883f54 100644
+--- a/docs/01-architecture/05-testing-strategy.md
++++ b/docs/01-architecture/05-testing-strategy.md
+@@ -47,3 +47,15 @@ AIエージェントは、この「特定のフレームワークの複雑な内
+ 1. **仕様定義**: 人間（ユーザー）が「業務ルール（DDD）」と「ユーザーシナリオ（E2E）」を自然言語で定義する。
+ 2. **実装・テスト生成**: AIエージェントが、純粋なドメイン層（Vitest）と、UIを貫通するシナリオ（Playwright）のテストを生成し、それを満たす実装を行う。
+ 3. **継続的保守**: UI変更によってPlaywrightのテストが破損した場合、人間が手動で直すのではなく、エラーログをAIに渡して自己修復（Self-Healing）させるフローを標準とする。
++
++## 4. E2Eテストの検証結果・証跡（Trace）管理
++PlaywrightによるE2Eテストは、単なる合否の判定にとどまらず、デバッグや品質保証のための「視覚的な証跡」を自動で残す設計とする。
++
++### 4.1 保存されるアーティファクト（証跡）
++Playwright実行時に生成される以下のファイル群は、Gitの管理対象外（`.gitignore`）とし、ローカルまたはCI環境上にのみ保存する。
++- **HTMLレポート (`playwright-report/`)**: テスト全体の合否、実行時間、各ステップのサマリーを視覚化する静的ファイル。
++- **テスト結果・トレース (`test-results/`)**: 失敗時のスクリーンショット、動画、およびTraceファイルが保存される。
++
++### 4.2 Trace Viewer（タイムマシンデバッグ）の徹底
++- **ルール**: CI（GitHub Actions等）環境において、テストがリトライしても失敗した場合は**必ずTrace機能（`trace: 'on-first-retry'` または `retain-on-failure`）を有効化**し、Traceファイル（`.zip`）をCIのアーティファクトとして保存する。
++- **運用**: テスト失敗時、開発者は手元で再現を試みる前に、まずこのTraceファイルをダウンロードしてPlaywright Trace Viewer（`npx playwright show-trace`）で開くこと。ミリ秒単位のDOMの状態、ネットワークリクエスト、コンソールログを「タイムマシン」のように巻き戻して確認し、失敗原因を特定する。
+diff --git a/src/app/actions/purchaseNoteAction.ts b/src/app/actions/purchaseNoteAction.ts
+index f9d2075..d8e0924 100644
+--- a/src/app/actions/purchaseNoteAction.ts
++++ b/src/app/actions/purchaseNoteAction.ts
+@@ -1,30 +1,30 @@
+ "use server";
+ 
+ import { revalidatePath } from "next/cache";
++import { registry } from "@/lib/registry";
+ 
+ export type ActionState = {
+ 	success: boolean;
+ 	error?: string;
+ };
+ 
+-// 実際の実装ではリポジトリを注入するかファクトリを使用します。
+-// ここではデモ用にシミュレートしています。
+-// ダミーの購入処理サーバーアクションを実装します。
+ export async function purchaseNoteAction(noteId: string): Promise<ActionState> {
+ 	console.log(`[Server Action] Purchasing note: ${noteId}`);
+ 
+ 	try {
+-		// ネットワーク遅延をシミュレート
+-		await new Promise((resolve) => setTimeout(resolve, 1000));
+-
+-		// 実際の実装イメージ:
+-		// const useCase = new PurchaseNoteUseCase(repository);
+-		// const result = await useCase.execute({ noteId, buyerId: "current-user-id" });
+-		// 🚨 悪い例: if (!result.success) throw new Error(result.error);
+-		// ✅ 良い例: ドメイン層の Result をそのままクライアントへ返す
+-		// if (!result.success) {
+-		// 	return { success: false, error: result.error.message };
+-		// }
++		// 現在のログインユーザー（デモ用に固定）
++		const currentUserId = "test-buyer";
++
++		// UseCase の実行
++		const result = await registry.purchaseUseCase.execute({
++			noteId,
++			buyerId: currentUserId,
++		});
++
++		// ドメイン層の Result を評価し、エラーならメッセージを返す
++		if (!result.success) {
++			return { success: false, error: result.error.message };
++		}
+ 
+ 		// 記事詳細ページを再検証（キャッシュ破棄）し、有料部分を表示させる
+ 		revalidatePath(`/notes/${noteId}`);
+@@ -32,7 +32,6 @@ export async function purchaseNoteAction(noteId: string): Promise<ActionState> {
+ 		return { success: true };
+ 	} catch (error) {
+ 		console.error("サーバーアクションで予期せぬエラー:", error);
+-		// システムエラー時も throw ではなく 500系の安全なレスポンスを返す
+ 		return {
+ 			success: false,
+ 			error: "サーバーで予期せぬエラーが発生しました。",
+diff --git a/src/app/notes/[id]/page.tsx b/src/app/notes/[id]/page.tsx
+index 47dbf10..4891b4e 100644
+--- a/src/app/notes/[id]/page.tsx
++++ b/src/app/notes/[id]/page.tsx
+@@ -1,22 +1,13 @@
+ import { notFound } from "next/navigation";
+ import { NoteDetail } from "@/features/note/components/NoteDetail";
++import { registry } from "@/lib/registry";
+ 
+-// 実際にはリポジトリやQueryServiceを呼び出します
+-async function getNoteData(id: string) {
+-	if (id === "not-found") return null;
+-	return {
+-		id,
+-		title: "AIを活用した次世代フロントエンドアーキテクチャ",
+-		authorId: "iorirac",
+-		categoryId: "tech",
+-		price: 500,
+-		publishedAt: new Date().toISOString(),
+-	};
+-}
+-
+-// Next.js Metadata API: SEO向けの動的メタデータ生成
+ export async function generateMetadata({ params }: { params: { id: string } }) {
+-	const note = await getNoteData(params.id);
++	const currentUserId = "test-buyer";
++	const note = await registry.noteDetailQueryService.getNoteDetail(
++		params.id,
++		currentUserId,
++	);
+ 	if (!note) return { title: "Not Found" };
+ 
+ 	return {
+@@ -37,16 +28,23 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
+ }
+ 
+ export default async function NotePage({ params }: { params: { id: string } }) {
+-	const note = await getNoteData(params.id);
++	const currentUserId = "test-buyer";
++
++	// 詳細データの取得（購入済みなら有料エリアを含む）
++	const note = await registry.noteDetailQueryService.getNoteDetail(
++		params.id,
++		currentUserId,
++	);
+ 	if (!note) {
+ 		notFound();
+ 	}
+ 
+-	// ユーザーが購入済みかどうかの確認をシミュレート
+-	// デモのためfalseを渡しています。実際には購入後にtrueへ切り替わります。
+-	const isPurchased = false;
++	// UI表示用フラグ
++	const isPurchased = await registry.noteDetailQueryService.isPurchased(
++		note.id,
++		currentUserId,
++	);
+ 
+-	// Google検索向け JSON-LD (構造化データ: Article)
+ 	const jsonLd = {
+ 		"@context": "https://schema.org",
+ 		"@type": "Article",
+@@ -66,7 +64,6 @@ export default async function NotePage({ params }: { params: { id: string } }) {
+ 
+ 	return (
+ 		<>
+-			{/* JSON-LD の注入 */}
+ 			<script
+ 				type="application/ld+json"
+ 				// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD requires dangerouslySetInnerHTML
+diff --git a/src/app/page.tsx b/src/app/page.tsx
+index ab74210..d0437c8 100644
+--- a/src/app/page.tsx
++++ b/src/app/page.tsx
+@@ -1,49 +1,9 @@
+ import { NoteList } from "@/features/note/components/NoteList";
++import { registry } from "@/lib/registry";
+ 
+ export default async function HomePage() {
+-	// デモ用の静的データ（※本来は QueryService から取得しますが、現在DB未接続＆インメモリが空のため）
+-	const dummyNotes = [
+-		{
+-			noteId: "demo-note-1",
+-			authorId: "iorirac",
+-			title: "AIを活用した次世代フロントエンドアーキテクチャ",
+-			price: 500,
+-			category: "tech/frontend",
+-			publishedAt: new Date(),
+-		},
+-		{
+-			noteId: "demo-note-2",
+-			authorId: "backend-master",
+-			title: "DDDとクリーンアーキテクチャの実践的アプローチ",
+-			price: 1500,
+-			category: "tech/backend",
+-			publishedAt: new Date(Date.now() - 86400000),
+-		},
+-		{
+-			noteId: "demo-note-3",
+-			authorId: "beginner-dev",
+-			title: "【無料公開】ゼロから始めるNext.js App Router入門",
+-			price: 0,
+-			category: "tech/frontend",
+-			publishedAt: new Date(Date.now() - 86400000 * 2),
+-		},
+-		{
+-			noteId: "demo-note-4",
+-			authorId: "designer-ai",
+-			title: "読者を魅了するタイポグラフィとホワイトスペースの魔法",
+-			price: 980,
+-			category: "design/uiux",
+-			publishedAt: new Date(Date.now() - 86400000 * 3),
+-		},
+-		{
+-			noteId: "demo-note-5",
+-			authorId: "marketer-ai",
+-			title: "Next.jsで作る完璧なSEO対策とGA4組み込みガイド",
+-			price: 300,
+-			category: "marketing/seo",
+-			publishedAt: new Date(Date.now() - 86400000 * 4),
+-		},
+-	];
++	// Registryのクエリサービスから本物のインメモリデータを取得
++	const notes = await registry.noteSummaryQueryService.findPublishedNotes(10);
+ 
+ 	return (
+ 		<div className="space-y-8">
+@@ -54,7 +14,7 @@ export default async function HomePage() {
+ 				</p>
+ 			</div>
+ 
+-			<NoteList notes={dummyNotes} />
++			<NoteList notes={notes} />
+ 		</div>
+ 	);
+ }
+diff --git a/src/features/note/components/NoteDetail.tsx b/src/features/note/components/NoteDetail.tsx
+index c24fafa..47dde51 100644
+--- a/src/features/note/components/NoteDetail.tsx
++++ b/src/features/note/components/NoteDetail.tsx
+@@ -10,6 +10,7 @@ export function NoteDetail({
+ 		authorId: string;
+ 		categoryId: string;
+ 		price: number;
++		content: string;
+ 	};
+ 	isPurchased: boolean;
+ }) {
+@@ -31,33 +32,19 @@ export function NoteDetail({
+ 				</div>
+ 			</header>
+ 
+-			{/* 本文領域（Typography プラグインで美しくレンダリング） */}
++			{/* 本文領域 */}
+ 			<div className="prose prose-lg prose-gray max-w-none mx-auto leading-relaxed text-gray-800">
+-				<p className="first-letter:text-5xl first-letter:font-bold first-letter:mr-1 first-letter:float-left">
+-					この記事では、次世代のAIアーキテクチャについて深く解説します。
+-					これまで私たちが当たり前だと思っていたソフトウェア設計のパラダイムは、
+-					大規模言語モデル（LLM）の台頭により根底から覆されようとしています。
+-				</p>
+-				<p>
+-					本稿では、最新の実務事例を交えながら、クリーンアーキテクチャとAIエージェントを
+-					いかに融合させるか、その具体的な手法とベストプラクティスを余すところなく公開します。
+-				</p>
++				{/* サーバーから渡されたコンテンツをそのまま表示 */}
++				<div className="whitespace-pre-wrap">{note.content}</div>
+ 
+-				{/* 課金壁（ペイウォール） */}
++				{/* 課金壁（ペイウォール）未購入時のみ表示 */}
+ 				{!isPurchased && (
+ 					<div className="relative mt-16">
+-						{/* ぼかしエフェクトのかかったダミーテキスト */}
+ 						<div className="absolute inset-0 bg-gradient-to-b from-transparent to-white pointer-events-none z-10" />
+ 						<div className="blur-sm opacity-40 select-none" aria-hidden="true">
+-							<p>
+-								ここから先は有料部分のシミュレーションです。
+-								高度な技術解説や、実際のプロダクションで利用している
+-								門外不出のソースコードなどが記述されています。
+-								これを読むことであなたのエンジニアリングスキルは飛躍的に向上するでしょう。
+-							</p>
++							<p>ここから先は有料部分です。</p>
+ 						</div>
+ 
+-						{/* 購入ボタンUI */}
+ 						<div className="relative z-20 -mt-10 mx-auto max-w-md bg-white border border-gray-200 shadow-xl rounded-2xl p-8 text-center space-y-6">
+ 							<div className="w-12 h-12 bg-gray-900 text-white rounded-full flex items-center justify-center mx-auto mb-4">
+ 								🔒
+@@ -67,25 +54,13 @@ export function NoteDetail({
+ 									この続きを読むには
+ 								</h3>
+ 								<p className="text-sm text-gray-500">
+-									この記事は有料設定されています。購入すると、すべての内容とソースコードにアクセスできます。
++									この記事は有料設定されています。購入すると、すべての内容にアクセスできます。
+ 								</p>
+ 							</div>
+ 							<PurchaseButton noteId={note.id} price={note.price} />
+ 						</div>
+ 					</div>
+ 				)}
+-
+-				{/* 有料部分（購入済みの場合のみ表示） */}
+-				{isPurchased && (
+-					<div className="mt-12 pt-12 border-t-2 border-gray-100">
+-						<h2>【有料部分】高度なアーキテクチャ実装</h2>
+-						<p>
+-							ご購入ありがとうございます。
+-							ここからは、実際のプロジェクトで利用している具体的な実装パターンについて解説します。
+-							（※本来は note.content の全文を表示します）
+-						</p>
+-					</div>
+-				)}
+ 			</div>
+ 		</article>
+ 	);
+diff --git a/src/features/note/infrastructure/InMemoryNoteDetailQueryService.ts b/src/features/note/infrastructure/InMemoryNoteDetailQueryService.ts
+new file mode 100644
+index 0000000..c09db12
+--- /dev/null
++++ b/src/features/note/infrastructure/InMemoryNoteDetailQueryService.ts
+@@ -0,0 +1,59 @@
++import type { InMemoryPurchaseRepository } from "@/features/purchase/infrastructure/InMemoryPurchaseRepository";
++import { UserId } from "@/shared/domain/UserId";
++import { NoteId } from "../domain/NoteId";
++import type {
++	INoteDetailQueryService,
++	NoteDetailDto,
++} from "../queries/INoteDetailQueryService";
++import type { InMemoryNoteRepository } from "./InMemoryNoteRepository";
++
++export class InMemoryNoteDetailQueryService implements INoteDetailQueryService {
++	constructor(
++		private readonly noteRepository: InMemoryNoteRepository,
++		private readonly purchaseRepository: InMemoryPurchaseRepository,
++	) {}
++
++	async isPurchased(noteIdStr: string, userIdStr: string): Promise<boolean> {
++		const noteIdResult = NoteId.create(noteIdStr);
++		const userIdResult = UserId.create(userIdStr);
++
++		if (!noteIdResult.success || !userIdResult.success) return false;
++
++		return await this.purchaseRepository.hasPurchased(
++			userIdResult.value,
++			noteIdResult.value,
++		);
++	}
++
++	async getNoteDetail(
++		noteIdStr: string,
++		userIdStr: string | null,
++	): Promise<NoteDetailDto | null> {
++		const noteIdResult = NoteId.create(noteIdStr);
++		if (!noteIdResult.success) return null;
++
++		const note = await this.noteRepository.findById(noteIdResult.value);
++		if (!note) return null;
++
++		let isPurchased = false;
++		if (userIdStr) {
++			isPurchased = await this.isPurchased(noteIdStr, userIdStr);
++		}
++
++		// 購入済みか、記事の著者が自分自身なら有料部分も返す
++		const canReadPaidArea = isPurchased || userIdStr === note.authorId.value;
++
++		return {
++			id: note.id.value,
++			title: note.title.value,
++			authorId: note.authorId.value,
++			categoryId: `${note.category.major}/${note.category.minor}`,
++			price: note.price.amount,
++			publishedAt: note.updatedAt.toISOString(),
++			content:
++				canReadPaidArea && note.content.paidArea
++					? `${note.content.freeArea}\n\n---\n\n${note.content.paidArea}`
++					: note.content.freeArea,
++		};
++	}
++}
+diff --git a/src/features/note/queries/INoteDetailQueryService.ts b/src/features/note/queries/INoteDetailQueryService.ts
+new file mode 100644
+index 0000000..fc78670
+--- /dev/null
++++ b/src/features/note/queries/INoteDetailQueryService.ts
+@@ -0,0 +1,17 @@
++export type NoteDetailDto = {
++	id: string;
++	title: string;
++	authorId: string;
++	categoryId: string;
++	price: number;
++	publishedAt: string;
++	content: string; // isPurchasedがfalseなら無料エリアのみ、trueなら有料エリアも含む
++};
++
++export interface INoteDetailQueryService {
++	getNoteDetail(
++		noteId: string,
++		userId: string | null,
++	): Promise<NoteDetailDto | null>;
++	isPurchased(noteId: string, userId: string): Promise<boolean>;
++}
+diff --git a/src/lib/registry.ts b/src/lib/registry.ts
+new file mode 100644
+index 0000000..b282807
+--- /dev/null
++++ b/src/lib/registry.ts
+@@ -0,0 +1,80 @@
++import { Category } from "@/features/note/domain/Category";
++import { Note } from "@/features/note/domain/Note";
++import { NoteContent } from "@/features/note/domain/NoteContent";
++import { NoteId } from "@/features/note/domain/NoteId";
++import { NOTE_STATUS } from "@/features/note/domain/NoteStatus";
++import { NoteTitle } from "@/features/note/domain/NoteTitle";
++import { Price } from "@/features/note/domain/Price";
++import { InMemoryNoteDetailQueryService } from "@/features/note/infrastructure/InMemoryNoteDetailQueryService";
++import { InMemoryNoteRepository } from "@/features/note/infrastructure/InMemoryNoteRepository";
++import { InMemoryNoteSummaryQueryService } from "@/features/note/infrastructure/InMemoryNoteSummaryQueryService";
++import { InMemoryPurchaseRepository } from "@/features/purchase/infrastructure/InMemoryPurchaseRepository";
++import { PurchaseNoteUseCase } from "@/features/purchase/usecases/PurchaseNoteUseCase";
++import { UserId } from "@/shared/domain/UserId";
++
++const createInitialData = (noteRepo: InMemoryNoteRepository) => {
++	const idRes = NoteId.create("demo-note-1");
++	const authorIdRes = UserId.create("iorirac");
++	const titleRes = NoteTitle.create(
++		"AIを活用した次世代フロントエンドアーキテクチャ",
++	);
++	const contentRes = NoteContent.create({
++		freeArea: "無料エリアです。ここに記事の導入が書かれます。",
++		paidArea: "有料エリアです。具体的なプロンプトは...",
++		isPaid: true,
++	});
++	const priceRes = Price.create(500);
++	const catRes = Category.create("ENGINEERING", "PROMPT");
++
++	if (
++		idRes.success &&
++		authorIdRes.success &&
++		titleRes.success &&
++		contentRes.success &&
++		priceRes.success &&
++		catRes.success
++	) {
++		const note = Note.reconstruct({
++			id: idRes.value,
++			authorId: authorIdRes.value,
++			title: titleRes.value,
++			content: contentRes.value,
++			price: priceRes.value,
++			category: catRes.value,
++			status: NOTE_STATUS.PUBLISHED,
++			createdAt: new Date(),
++			updatedAt: new Date(),
++		});
++		noteRepo.save(note);
++	}
++};
++
++const setupRegistry = () => {
++	const noteRepo = new InMemoryNoteRepository();
++	const purchaseRepo = new InMemoryPurchaseRepository();
++
++	createInitialData(noteRepo);
++
++	const purchaseUseCase = new PurchaseNoteUseCase(noteRepo, purchaseRepo);
++	const noteSummaryQueryService = new InMemoryNoteSummaryQueryService(noteRepo);
++	const noteDetailQueryService = new InMemoryNoteDetailQueryService(
++		noteRepo,
++		purchaseRepo,
++	);
++
++	return {
++		purchaseUseCase,
++		noteSummaryQueryService,
++		noteDetailQueryService,
++	};
++};
++
++const globalForRegistry = globalThis as unknown as {
++	registry: ReturnType<typeof setupRegistry>;
++};
++
++export const registry = globalForRegistry.registry || setupRegistry();
++
++if (process.env.NODE_ENV !== "production") {
++	globalForRegistry.registry = registry;
++}
+diff --git a/tests/e2e/purchaseFlow.spec.ts b/tests/e2e/purchaseFlow.spec.ts
+new file mode 100644
+index 0000000..02b1ff9
+--- /dev/null
++++ b/tests/e2e/purchaseFlow.spec.ts
+@@ -0,0 +1,49 @@
++import { expect, test } from "@playwright/test";
++
++test.describe("Note Purchase Flow", () => {
++	test("ユーザーが記事一覧から記事を購入し、有料エリアが読めるようになる", async ({
++		page,
++	}) => {
++		// 1. トップページにアクセス
++		await page.goto("/");
++		await expect(page).toHaveTitle(/AI-Note Market/);
++
++		// 2. 記事一覧から「詳細を見る」をクリック
++		const articleLink = page.getByRole("link", { name: "詳細を見る" }).first();
++		await expect(articleLink).toBeVisible();
++		await articleLink.click();
++
++		// 3. 詳細ページに遷移したことを確認
++		await expect(page).toHaveURL(/.*\/notes\/demo-note-1/);
++		await expect(
++			page.getByRole("heading", {
++				name: "AIを活用した次世代フロントエンドアーキテクチャ",
++			}),
++		).toBeVisible();
++
++		// 4. 未購入状態の確認
++		const contentLocator = page.locator(".prose");
++		await expect(contentLocator).toContainText("無料エリアです");
++		await expect(contentLocator).not.toContainText("具体的なプロンプトは");
++
++		// 購入トリガーボタンが存在することを確認（例: ¥500 で購入する）
++		const purchaseTriggerButton = page
++			.getByRole("button", { name: /で購入する/ })
++			.first();
++		await expect(purchaseTriggerButton).toBeVisible();
++
++		// 5. 購入モーダルを開く
++		await purchaseTriggerButton.click();
++
++		// 6. モーダル内の「確定する」ボタンをクリック
++		const confirmButton = page.getByRole("button", { name: "確定する" });
++		await expect(confirmButton).toBeVisible();
++		await confirmButton.click();
++
++		// 7. 購入処理の完了を待機し、有料エリアのコンテンツが表示されたことを確認
++		// ボタンが消える
++		await expect(purchaseTriggerButton).toBeHidden({ timeout: 10000 });
++		// 有料テキストが表示される
++		await expect(contentLocator).toContainText("具体的なプロンプトは");
++	});
++});

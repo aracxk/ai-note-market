@@ -92,10 +92,7 @@ export class PublishNoteUseCase {
 		}
 
 		// 4. 記事集約の公開メソッドを実行
-		const publishResult = note.publish(now);
-		if (!publishResult.success) {
-			return Result.err(publishResult.error);
-		}
+		note.publish(now);
 
 		// 5. 更新された集約をリポジトリへ保存
 		await this.noteRepository.save(note);

@@ -124,6 +124,15 @@ describe("PurchaseNoteUseCase (記事購入ユースケース)", () => {
 	});
 
 	describe("② 異常系（業務ルール・バリデーション違反）", () => {
+		it("無効なnoteIdの場合はエラーを返す", async () => {
+			const result = await useCase.execute({ noteId: " ", buyerId: "buyer-1" });
+			expect(result.success).toBe(false);
+		});
+		it("無効なbuyerIdの場合はエラーを返す", async () => {
+			const result = await useCase.execute({ noteId: "note-1", buyerId: " " });
+			expect(result.success).toBe(false);
+		});
+
 		it("存在しない記事IDを指定した場合は NoteNotFoundError が返ること", async () => {
 			const buyerId = UserId.generate();
 
